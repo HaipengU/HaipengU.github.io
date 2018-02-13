@@ -321,7 +321,8 @@ $(document).ready(function () {
 </section>
 <section id="mice-data" class="level2">
 <h2>Mice Data</h2>
-<pre class="r"><code>library(BGLR)
+<pre class="r"><code># install.packages(&quot;BGLR&quot;)
+library(BGLR)
 data(mice)
 `?`(mice)
 `?`(mice.X) # genotype matrix
@@ -330,7 +331,8 @@ data(mice)
 <section id="step-one-fit-ordinary-least-square-ols-to-estimate-fixed-effects-b_hat" class="level2">
 <h2>Step One : Fit ordinary least square (OLS) to estimate fixed effects (b_hat)</h2>
 <pre class="r"><code>dat&lt;-mice.pheno[,c(&quot;GENDER&quot;,&quot;Litter&quot;,&quot;Obesity.BMI&quot;)] # dataset
-fit&lt;- lm(Obesity.BMI ~ Litter + factor(GENDER), data= dat) # fit OLS
+head(dat)
+fit&lt;- lm(Obesity.BMI ~ -1 + Litter + factor(GENDER) , data= dat) # fit OLS
 summary(fit)
 b_hat&lt;- fit$coefficients</code></pre>
 </section>
@@ -355,7 +357,7 @@ dim(G) # 1814 x 1814</code></pre>
 </section>
 <section id="incidence-matrix-x" class="level3">
 <h3>Incidence Matrix X</h3>
-<pre class="r"><code>X&lt;-model.matrix(~ dat$Litter + factor(dat$GENDER)) 
+<pre class="r"><code>X&lt;-model.matrix(~ -1 + dat$Litter + dat$GENDER) 
 dim(X)
 head(X)</code></pre>
 </section>
@@ -395,7 +397,7 @@ dim(u_hatG)</code></pre>
 <p>We can estimate fixed effects and predict GEBV simultaneously by using MME. The function of computeMME requires 6 arguments of phenotype matrix (y), incidence matrix for fixed effects (X), incidence matrix for random effects (Z), genomic relationship matrix (G), variance components sigma2G and sigma2e.</p>
 <pre class="r"><code>computeMME &lt;- function(y, X, Z, G, sigma2G, sigma2e) {
   
-  X&lt;-model.matrix(~ dat$Litter + factor(dat$GENDER)) 
+  X&lt;-model.matrix(~ -1 + dat$Litter + factor(dat$GENDER)) 
   Z &lt;- diag(nrow(G))
   I &lt;- diag(nrow(G))
   lambdaG &lt;- sigma2e/sigma2G
