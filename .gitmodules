@@ -1,8 +1,0 @@
-[submodule "public"]
-	path = public
-	url = git@github.com:HaipengU/HaipengU.github.io.git
-	branch = master
-[submodule "themes/academic"]
-	path = themes/academic
-	url = git@github.com:HaipengU/hugo-academic
-	branch = master
