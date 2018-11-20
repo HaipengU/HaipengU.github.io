@@ -1,7 +1,9 @@
 ---
 title: "Genomic-based BLUP (GBLUP)"
-output:  
- md_document
+author: "HaipengYu"
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
