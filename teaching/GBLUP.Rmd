@@ -1,8 +1,7 @@
 ---
 title: "Genomic-based BLUP (GBLUP)"
 output:  
- html_document: 
-  smart: false
+ md_document
 ---
 
 ```{r setup, include=FALSE}
