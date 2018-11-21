@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Homes on Haipeng Yu</title>
+    <link>https://HaipengU.github.io/home/</link>
+    <description>Recent content in Homes on Haipeng Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; Haipeng Yu</copyright>
+    <lastBuildDate>Sun, 18 Nov 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://HaipengU.github.io/home/feed.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://HaipengU.github.io/home/about/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/home/about/</guid>
+      <description>About me I am a Ph.D. student in the Morota Lab in the Department of Animal and Poultry Sciences at Virginia Polytechnic Institute and State University. My research interest is focused on applying statistical methods to study quantitative genetics.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://HaipengU.github.io/home/hero_carousel/</link>
+      <pubDate>Sun, 15 Oct 2017 00:00:00 -0400</pubDate>
+      
+      <guid>https://HaipengU.github.io/home/hero_carousel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Academic</title>
+      <link>https://HaipengU.github.io/home/hero/</link>
+      <pubDate>Sun, 15 Oct 2017 00:00:00 -0400</pubDate>
+      
+      <guid>https://HaipengU.github.io/home/hero/</guid>
+      <description>The highly flexible website framework for Hugo with an extensible plugin mechanism. Create a beautifully simple site in under 10 minutes 🚀 Latest release   Star</description>
+    </item>
+    
+    <item>
+      <title>Publications</title>
+      <link>https://HaipengU.github.io/home/publications/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/home/publications/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Recent Posts</title>
+      <link>https://HaipengU.github.io/home/posts/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/home/posts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Teaching</title>
+      <link>https://HaipengU.github.io/home/teaching/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/home/teaching/</guid>
+      <description> Guest Lecture  ASCI 944/STAT 844 Quantitative Methods for Genomics of Complex Traits Slide &amp;amp; R   </description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>https://HaipengU.github.io/home/contact/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/home/contact/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
