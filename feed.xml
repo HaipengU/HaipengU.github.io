@@ -11,6 +11,15 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Genomic Bayesian confirmatory factor analysis and Bayesian network to characterize a wide spectrum of rice phenotypes</title>
+      <link>https://HaipengU.github.io/publication/bayesiancfa_bn/</link>
+      <pubDate>Tue, 16 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/publication/bayesiancfa_bn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Motivation for Blogging</title>
       <link>https://HaipengU.github.io/blog/2018/11/motivation_of_blogging/</link>
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
@@ -18,15 +27,6 @@
       <guid>https://HaipengU.github.io/blog/2018/11/motivation_of_blogging/</guid>
       <description>&lt;p&gt;This blog will include my research associated materials and R code.&lt;/p&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>Genomic Bayesian confirmatory factor analysis and Bayesian network to characterize a wide spectrum of rice phenotypes</title>
-      <link>https://HaipengU.github.io/publication/bayesiancfa_bn/</link>
-      <pubDate>Fri, 05 Oct 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://HaipengU.github.io/publication/bayesiancfa_bn/</guid>
-      <description></description>
     </item>
     
     <item>
@@ -39,7 +39,7 @@
     </item>
     
     <item>
-      <title>Genomic relatedness strengthens genetic connectedness across management units.</title>
+      <title>Genomic relatedness strengthens genetic connectedness across management units</title>
       <link>https://HaipengU.github.io/publication/gc1/</link>
       <pubDate>Thu, 31 Aug 2017 00:00:00 +0000</pubDate>
       
