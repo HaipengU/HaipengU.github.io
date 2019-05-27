@@ -1,0 +1,5 @@
+The posts.md is a widge file. This file should be moved to /content/home when I need to add a recent posts section in the homepage. 
+Details to add recent posts section:
+1) move posts.md from /content/post to /content/home
+2) creat newpost.md in /content/post
+3) add the associated [[menu.main]] entry of post in config.toml. 
