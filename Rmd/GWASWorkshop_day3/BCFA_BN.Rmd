@@ -224,29 +224,34 @@ Probabilistic directed acyclic graphical model (DAG)
 
 ---
 # CFA vs. EFA
-Wheat Data structure (CFA) :
-<div align="center"> 
-<img src="Data_Structure.png" height="500px" width="650px"/>
+<div align="center">
+<img src="EFA_CFA.png" height="500px" width="750px"/>
 </div>
 
----
-# CFA vs. EFA
-Bayesian Network (CFA)
+<!-- # CFA vs. EFA -->
+<!-- Wheat Data structure (CFA) : -->
+<!-- <div align="center">  -->
+<!-- <img src="Data_Structure.png" height="500px" width="650px"/> -->
+<!-- </div> -->
 
----
-# CFA vs. EFA
-Number of factors in EFA: 
-<div align="center"> 
-<img src="Scree_Plot.png" height="500px" width="650px"/>
-</div>
+<!-- --- -->
+<!-- # CFA vs. EFA -->
+<!-- Bayesian Network (CFA) -->
 
----
-# CFA vs. EFA
-Bayesian Network of EFA: 
+<!-- --- -->
+<!-- # CFA vs. EFA -->
+<!-- Number of factors in EFA:  -->
+<!-- <div align="center">  -->
+<!-- <img src="Scree_Plot.png" height="500px" width="650px"/> -->
+<!-- </div> -->
 
----
-# CFA vs. EFA
-Factor loading of EFA:
+<!-- --- -->
+<!-- # CFA vs. EFA -->
+<!-- Bayesian Network of EFA:  -->
+
+<!-- --- -->
+<!-- # CFA vs. EFA -->
+<!-- Factor loading of EFA: -->
 
 ---
 # Summary
@@ -262,6 +267,10 @@ level of latent variables
 
 ---
 # Useful links
+<div align="center">
+<img src="G3paper.png" height="300px" width="600px"/>
+</div>
+
 - Genomic Bayesian confirmatory factor analysis and Bayesian network to characterize a wide spectrum of rice phenotypes (https://www.g3journal.org/content/9/6/1975)
 
 - An illustrative example of Bayesian Network (https://haipengu.github.io/Rmd/GBN.html)
