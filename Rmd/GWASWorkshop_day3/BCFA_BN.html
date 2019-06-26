@@ -3,7 +3,7 @@
   <head>
     <title>Bayesian confirmatory factor analysis and Bayesian network for high-dimensional phenotypic data</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Haipeng Yu  https://haipengu.github.io/" />
+    <meta name="author" content="Haipeng Yu  https://haipengu.github.io/   Gota Morota   http://morotalab.org/" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
   </head>
@@ -13,8 +13,8 @@ class: center, middle, inverse, title-slide
 
 # Bayesian confirmatory factor analysis and Bayesian network for high-dimensional phenotypic data
 ## GWAS Workshop <span class="citation">@VT</span>
-### Haipeng Yu <br /><a href="https://haipengu.github.io/" class="uri">https://haipengu.github.io/</a> <br />
-### 2019/6/25
+### Haipeng Yu <br /><a href="https://haipengu.github.io/" class="uri">https://haipengu.github.io/</a> <br /> Gota Morota <br /> <a href="http://morotalab.org/" class="uri">http://morotalab.org/</a>
+### 2019/6/26
 
 ---
 
@@ -136,7 +136,7 @@ Bayesian genomic best linear unbiased prediction
 &lt;div align="center"&gt;    
 &lt;img src="MTMvar.png" height="100px" width="500px"/&gt;
 &lt;/div&gt;
-- `\(\mathbf{u}\)`, `\(\mathbf{b}\)` were assigned a flat prior
+- `\(\mathbf{\mu}\)`, `\(\mathbf{b}\)` were assigned a flat prior
 
 - `\(\boldsymbol{\Sigma_{u}}\)`, `\(\boldsymbol{\Sigma_{e}}\)` are variance-covariance matrix between latent variables
 
@@ -148,8 +148,8 @@ Bayesian genomic best linear unbiased prediction
 
 ---
 # Bayesian Network
-Probabilistic directed acyclic graphical model
-    - interrelationship (Edges) among latent variables (Nodes)
+Probabilistic directed acyclic graphical model (DAG)
+    - interrelationships (Edges) among latent variables (Nodes)
     - genetic selection for breeding requires causal assumptions
 
 &lt;div align="center"&gt; 
@@ -163,6 +163,15 @@ Probabilistic directed acyclic graphical model
 # Score-based learning
 &lt;img src="Score_based_algorithm.png" height="500px" width="700px"/&gt;
 
+---
+# Examples of algorithms 
+- Score-based algorithm
+  - Hill climbing
+  - Tabu search
+
+- Hybrid algorithm
+  - Max-Min Hill Climbing algorithm
+  - General 2-Phase Restricted Maximization algorithm
 ---
 # Standardized factor loadings
 &lt;div align="center"&gt; 
@@ -216,7 +225,7 @@ Probabilistic directed acyclic graphical model
 
 ---
 # CFA vs. EFA
-Data structure (CFA) :
+Wheat Data structure (CFA) :
 &lt;div align="center"&gt; 
 &lt;img src="Data_Structure.png" height="500px" width="650px"/&gt;
 &lt;/div&gt;
