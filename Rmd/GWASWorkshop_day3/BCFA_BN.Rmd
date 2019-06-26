@@ -160,7 +160,7 @@ Probabilistic directed acyclic graphical model
 
 ---
 # Score-based learning
-<img src="Score-based-diagram.pdf" height="500px" width="700px"/>
+<img src="Score_based_algorithm.png" height="500px" width="700px"/>
 
 ---
 # Standardized factor loadings
