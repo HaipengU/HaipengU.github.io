@@ -121,13 +121,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><a href="#variance-of-unit-effect-estimates">Variance of unit effect estimates</a></li>
 </ul></li>
 <li><a href="#connectedness-metrics">Connectedness Metrics</a><ul>
-<li><a href="#prediction-error-variance-of-difference">Prediction error variance of difference</a><ul>
+<li><a href="#prediction-error-variance-of-difference">Prediction error variance of difference</a></li>
 <li><a href="#coefficient-of-determination">Coefficient of Determination</a></li>
 <li><a href="#prediction-error-correlation">Prediction Error Correlation</a></li>
 <li><a href="#variance-of-differences-in-unit-effects-ved">Variance of differences in unit effects (VED)</a></li>
 <li><a href="#coefficient-of-determination-of-ved">Coefficient of Determination of VED</a></li>
 <li><a href="#connectedness-rating-cr">Connectedness Rating (CR)</a></li>
-</ul></li>
 </ul></li>
 <li><a href="#application-of-gca-package">Application of GCA package</a><ul>
 <li><a href="#install-gca-from-github">Install GCA from Github</a></li>
@@ -251,8 +250,9 @@ N \left [
 \text{PEVD}(\mathbf{x}) &amp;= \mathbf{x}' \mathbf{C}^{22} \mathbf{x} \sigma^2_{\epsilon},
 \end{align*}\]</span> where <span class="math inline">\(\mathbf{x}\)</span> is a contrast vector involving <span class="math inline">\(\frac{1}{n_{i'}}\)</span>, <span class="math inline">\(\frac{1}{n_{j'}}\)</span> and <span class="math inline">\(0\)</span> corresponding to individuals belonging to <span class="math inline">\(i′\)</span>th, <span class="math inline">\(j′\)</span>th, and the remaining units. The sum of elements in x equals to zero.</p></li>
 </ul>
-<div id="coefficient-of-determination" class="section level4">
-<h4>Coefficient of Determination</h4>
+</div>
+<div id="coefficient-of-determination" class="section level3">
+<h3>Coefficient of Determination</h3>
 <p>A CD metric measures the precision of genetic values and can be interpreted as the square of the correlation between the predicted and the true difference in the genetic values or the ratio between posterior and prior variances of genetic values <span class="math inline">\(\mathbf{u}\)</span> <span class="citation">(Laloë 1993)</span>. Notable difference of CD from PEVD is that it penalizes connectedness measurements when across management units include individuals that are too genetically similar <span class="citation">(Yu et al. 2017)</span>. A pairwise CD between individuals <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is given as <span class="math display">\[\begin{align*}
 \text{CD}_{ij} &amp;= \frac{\text{Var}(\mathbf{\hat{u}})}{\text{Var}(\mathbf{u})}\\
 &amp;= \frac{\text{Var}(\mathbf{u}) - \text{Var}(\mathbf{u}|\hat{\mathbf{u}})}{\text{Var}(\mathbf{u})} \\
@@ -280,8 +280,8 @@ N \left [
 \end{align*}\]</span></p></li>
 </ul>
 </div>
-<div id="prediction-error-correlation" class="section level4">
-<h4>Prediction Error Correlation</h4>
+<div id="prediction-error-correlation" class="section level3">
+<h3>Prediction Error Correlation</h3>
 <p>Prediction error correlation, known as pairwise r statistic, is computed with the elements of the PEV matrix and the prediction error correlation between individuals <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is defined as <span class="citation">(Lewis et al. 1999)</span> <span class="math display">\[\begin{align*}
 \text{r}_{ij} = \frac{\text{PEC}(\widehat{u_i}, \widehat{u_j})}{\sqrt{\text{PEV}(\widehat{u_i}) \cdot \text{PEV}(\widehat{u_j})}}.
 \end{align*}\]</span></p>
@@ -301,8 +301,8 @@ N \left [
 \end{align*}\]</span></p></li>
 </ul>
 </div>
-<div id="variance-of-differences-in-unit-effects-ved" class="section level4">
-<h4>Variance of differences in unit effects (VED)</h4>
+<div id="variance-of-differences-in-unit-effects-ved" class="section level3">
+<h3>Variance of differences in unit effects (VED)</h3>
 <p>The metric of VED is a function of VE, which can be used for connectedness measurement. Differ from PEV-derived metrics which includes two steps computation at the individual level and unit level, the VE-derived metrics using a single-step procedure to calculate unit connectedness directly. Moreover, the VE-derived metrics are expected to create less computation requirement according to the number of fixed effects are oftentimes smaller than the number of observations <span class="citation">(Holmes, Dodds, and Lee 2017)</span>. In general, the VE-derived metrics can be classified based on the number of fixed effects to be corrected, which includes no correction (0), correction for one fixed effect (1), and correction for two or more fixed effects (2) <span class="citation">(Holmes, Dodds, and Lee 2017)</span>.</p>
 <ul>
 <li><p><strong>VED0</strong>: Using the summary method of the group average PEVD, the VED0 statistic estimates PEVD alike connectedness with VE0 rather than PEV_Mean <span class="citation">(Kennedy and Trus 1993)</span>. The VED0 between two units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span> is defined as <span class="math display">\[\begin{align*}
@@ -318,8 +318,8 @@ N \left [
 \end{align*}\]</span></p></li>
 </ul>
 </div>
-<div id="coefficient-of-determination-of-ved" class="section level4">
-<h4>Coefficient of Determination of VED</h4>
+<div id="coefficient-of-determination-of-ved" class="section level3">
+<h3>Coefficient of Determination of VED</h3>
 <ul>
 <li><p><strong>CDVED0</strong> The CDVED0 statistic can be considered as a group average CD calculating with VE0. A pairwise CDVED0 between two units i′ and j′ is given by <span class="math display">\[\begin{align*}
 \text{CDVED0}_{i'j'} &amp;= 1 - \frac{\text{VE0}_{i'i'} + \text{VE0}_{j'j'} - 2\text{VE0}_{i'j'}}{\sigma^2_u \cdot (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}.
@@ -332,8 +332,8 @@ N \left [
 \end{align*}\]</span></p></li>
 </ul>
 </div>
-<div id="connectedness-rating-cr" class="section level4">
-<h4>Connectedness Rating (CR)</h4>
+<div id="connectedness-rating-cr" class="section level3">
+<h3>Connectedness Rating (CR)</h3>
 <ul>
 <li><p><strong>CR0</strong> The CR statistic, a group average r alike connectedness, is originally proposed by <span class="citation">(Mathur, Sullivan, and Chesnais 2002)</span> which replaced PEV_Meam with VE0 in the equation of group average r. The pairwise CR0 between two units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span> is defined as <span class="math display">\[\begin{align*}
 \text{CR0}_{i'j'} &amp;=
@@ -348,7 +348,6 @@ N \left [
 \frac{\text{VE2}_{i'j'} }{ \sqrt{ \text{VE2}_{i'i'} \cdot  \text{VE2}_{j'j'}}}.
 \end{align*}\]</span></p></li>
 </ul>
-</div>
 </div>
 </div>
 <div id="application-of-gca-package" class="section level2">
