@@ -20,7 +20,7 @@
 <style type="text/css">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -33,13 +33,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -118,28 +116,29 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="TOC" class="toc">
 <ul>
 <li><a href="#introduction">Introduction</a></li>
-<li><a href="#core-functions-of-connectedness-metrics">Core functions of connectedness metrics</a><ul>
-<li><a href="#prediction-error-variance">Prediction Error Variance</a></li>
-<li><a href="#variance-of-estimates-of-management-units-effects">Variance of estimates of management units effects</a></li>
+<li><a href="#core-functions">Core functions</a><ul>
+<li><a href="#prediction-error-variance">Prediction error variance</a></li>
+<li><a href="#variance-of-unit-effect-estimates">Variance of unit effect estimates</a></li>
 </ul></li>
 <li><a href="#connectedness-metrics">Connectedness Metrics</a><ul>
-<li><a href="#function-of-pev">Function of PEV</a><ul>
-<li><a href="#prediction-error-variance-of-difference">Prediction Error Variance of Difference</a></li>
+<li><a href="#prediction-error-variance-of-difference">Prediction error variance of difference</a><ul>
 <li><a href="#coefficient-of-determination">Coefficient of Determination</a></li>
 <li><a href="#prediction-error-correlation">Prediction Error Correlation</a></li>
-</ul></li>
-<li><a href="#function-of-ve">Function of VE</a><ul>
-<li><a href="#variance-of-estimates-of-unit-effects-differences">Variance of estimates of unit effects differences</a></li>
+<li><a href="#variance-of-differences-in-unit-effects-ved">Variance of differences in unit effects (VED)</a></li>
 <li><a href="#coefficient-of-determination-of-ved">Coefficient of Determination of VED</a></li>
 <li><a href="#connectedness-rating-cr">Connectedness Rating (CR)</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#application-of-gca-package">Application of GCA package</a><ul>
 <li><a href="#install-gca-from-github">Install GCA from Github</a></li>
-<li><a href="#load-example-cattle-dataset-in-gca-package.">Load example cattle dataset in GCA package.</a></li>
-<li><a href="#example-of-connectedness-across-units.">Example of connectedness across units.</a><ul>
-<li><a href="#individual-average-cd">Individual average CD</a></li>
-<li><a href="#coefficient-of-determination-of-ved-1">Coefficient of determination of VED</a></li>
+<li><a href="#data-preparation">Data preparation</a></li>
+<li><a href="#examples-of-connectedness-measures-across-units">Examples of connectedness measures across units</a><ul>
+<li><a href="#pev-derived-metric-pevd_idave-pairwise-vs.overall">PEV-derived metric: PEVD_IdAve (pairwise vs. overall)</a></li>
+<li><a href="#pev-derived-metric-cd_idave">PEV-derived metric: CD_IdAve</a></li>
+<li><a href="#pev-derived-metric-r_idave">PEV-derived metric: r_IdAve</a></li>
+<li><a href="#ve-derived-metric-ved0">VE-derived metric: VED0</a></li>
+<li><a href="#ve-derived-metric-cdved1">VE-derived metric: CDVED1</a></li>
+<li><a href="#ve-derived-metric-cr2">VE-derived metric: CR2</a></li>
 </ul></li>
 <li><a href="#available-connectedness-metrics-in-gca-package.">Available connectedness metrics in GCA package.</a></li>
 </ul></li>
@@ -153,15 +152,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
     <section id="main-content">
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>Genetic connectedness quantities the extent of linkage between individuals across management units. The concept of genetic connectedness can be extended to measure a connectedness level between training and testing sets in the whole-genome prediction area. However, there is no user-friendly R package that offers a comprehensive list of connectedness metrics. In this project, we aim to develop an R package, which utilizes either pedigree or genomic data to measure the connectedness between individuals across units.</p>
-<p>This package implements three connectedness metrics which are functions of prediction error variance (PEV) matrix, including prediction error variance of difference (PEVD), coefficient of determination (CD) and prediction error correlation (r), coupled with three summary methods for each statistic. For example, the PEVD across units is summarized as 1) average PEV of all pairwise differences between individuals across units; 2) average PEV within and across units; 3) use a contrast vector. Analogous summary methods will be also applied to CD and r statistics. Three additional metrics approximating connectedness using variance of estimates of unit effects (VE) are included, such as variance of estimates of units effects difference (VED), coefficient of determination of VED (CDVED), and connectedness rating (CR). Within each metric, three different methods are names according to the number of corrected factors (e.g., 0, 1 and 2) for fixed effects, such as VED0, VED1 and VED2. Similar corrected function is also applied for metrics of CDVED and CR.</p>
-<p>This R package is hosting on a GitHub page accompanied with a detailed vignette document. The core functions of the R code are rewritten with C++ to improve computational speed by taking the advantage of the Rcpp package. We expect this R package will provide a comprehensive tool for genetic connectedness analysis and whole genome prediction.</p>
+<p>Genetic connectedness quantities the extent of linkage between individuals across management units. The concept of genetic connectedness can be extended to measure a connectedness level between training and testing sets in the whole-genome prediction area. However, there is no user-friendly software tool that offers computation of a comprehensive list of connectedness statistics. Accordingly, we developed an R package, which utilizes either pedigree or genomic data to measure the connectedness between individuals across units.</p>
+<p>The connectedness statistics implemented in this R package can be classified into prediction error variance (PEV) and variance of unit effect estimates (VE) derived metrics according to the core function. The PEV-derived metrics include prediction error variance of unit differences (PEVD), coefficient of determination (CD), and prediction error correlation (r). These PEV-derived metrics can be summarized at the unit level as the average PEV of all pairwise differences between individuals across units, average PEV within and across units, or using a contrast vector. VE-derived metrics include variance of differences in management unit effects (VED), coefficient of determination of VED (CDVED), and connectedness rating (CR). Three correction factors accounting for the number of fixed effects are applied for each VE-derived metric. These include no correction (0), correcting for one fixed effect (1), and correcting for two or more fixed effects (2). Thus, the choice of core functions, metrics, summary functions, and correction factors combinations uniquely characterize connectedness statistics.</p>
+<p>This R package is hosting on a GitHub page accompanied with a detailed vignette document. The core functions of the R code are rewritten with C++ to improve computational speed using the Rcpp package <span class="citation">(Eddelbuettel and François 2011)</span>. We expect this R package will provide a comprehensive and effective tool for genetic connectedness analysis and whole genome prediction, which further contributes to the genetic evaluation and prediction.</p>
 </div>
-<div id="core-functions-of-connectedness-metrics" class="section level2">
-<h2>Core functions of connectedness metrics</h2>
+<div id="core-functions" class="section level2">
+<h2>Core functions</h2>
 <div id="prediction-error-variance" class="section level3">
-<h3>Prediction Error Variance</h3>
-<p>A PEV matrix typically serves as the kernel of connectedness measures, which can be obtained from Henderson’s mixed model equations (MME) <span class="citation">(Henderson 1984)</span>. Assume a standard linear mixed model <span class="math inline">\(\mathbf{y} = \mathbf{Xb} + \mathbf{Zu} + \boldsymbol{\epsilon}\)</span>, where <span class="math inline">\(\mathbf{y}\)</span>, <span class="math inline">\(\mathbf{b}\)</span>, <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\boldsymbol{\epsilon}\)</span> refer to a vector of phenotypes, effects of management units, random additive genetic effects and residuals, respectively. The <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{Z}\)</span> are incidence matrices which associate management units effects and individuals to phenotypes, respectively. The variance-covariance structure of this mixed model follows <span class="math display">\[\begin{align*}
+<h3>Prediction error variance</h3>
+<p>A PEV matrix is obtained from Henderson’s mixed model equations (MME) by assuming a standard linear mixed model <span class="math inline">\(\mathbf{y} = \mathbf{Xb} + \mathbf{Zu} + \boldsymbol{\epsilon}\)</span>, where <span class="math inline">\(\mathbf{y}\)</span>, <span class="math inline">\(\mathbf{b}\)</span>, <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\boldsymbol{\epsilon}\)</span> refer to a vector of phenotypes, systematic effects, random additive genetic effects, and residuals, respectively <span class="citation">(Henderson 1984)</span>. The <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{Z}\)</span> are incidence matrices associating systematic effects and genetic values to observations, respectively. The joint distribution of random effects follows <span class="math display">\[\begin{align*}
 \begin{pmatrix}
 \mathbf{y} \\
 \mathbf{u} \\
@@ -180,7 +179,7 @@ N \left [
 \mathbf{I}\sigma^2_{\epsilon} &amp; 0 &amp; \mathbf{I}\sigma^2_{\epsilon}
 \end{pmatrix}
   \right ] .
-\end{align*}\]</span> where <span class="math inline">\(\sigma^2_u\)</span> and <span class="math inline">\(\sigma^2_e\)</span> refer to additive genetic variance and residual variance, respectively. The <span class="math inline">\(\mathbf{K}\)</span> is a positive (semi)definite relationship matrix. Following this, the mixed model equation <span class="citation">(Henderson 1984)</span> can be written as <span class="math display">\[\begin{align}
+\end{align*}\]</span> where <span class="math inline">\(\sigma^2_u\)</span> and <span class="math inline">\(\sigma^2_e\)</span> refer to additive genetic variance and residual variance, respectively. The <span class="math inline">\(\mathbf{K}\)</span> is a relationship matrix. Accordingly, the MME can be written as <span class="math display">\[\begin{align}
 \begin{bmatrix}
 \mathbf{X'X} &amp; \mathbf{X'Z} \\
 \mathbf{Z'X}  &amp; \mathbf{Z'Z + K^{-1}\lambda}
@@ -195,7 +194,7 @@ N \left [
 \mathbf{Z'y}
 \end{bmatrix}
 \label{MMEeq}
-\end{align}\]</span> where <span class="math inline">\(\lambda\)</span> is a ratio of variance components which equals to <span class="math inline">\(\frac{\sigma^2_{\epsilon}}{\sigma^2_u}\)</span>. The inverse of the MME coefficient matrix derived from this model is <span class="math display">\[\begin{align*}
+\end{align}\]</span> where <span class="math inline">\(\lambda\)</span> is the ratio of variance components which equals to <span class="math inline">\(\frac{\sigma^2_{\epsilon}}{\sigma^2_u}\)</span>. The inverse of the MME coefficient matrix derived from this model is <span class="math display">\[\begin{align*}
 \mathbf{C}^{-1} &amp;= 
 \begin{bmatrix}
  \mathbf{X'X} &amp;      \mathbf{X'Z} \\
@@ -206,140 +205,147 @@ N \left [
     \mathbf{C}^{11} &amp; \mathbf{C}^{12} \\
      \mathbf{C}^{21} &amp; \mathbf{C}^{22} 
 \end{bmatrix}.
-\end{align*}\]</span> With this, the PEV of <span class="math inline">\(u\)</span> is defined as <span class="citation">(Henderson 1984)</span> <span class="math display">\[\begin{align*}
+\end{align*}\]</span> The corresponding PEV of <span class="math inline">\(u\)</span> is derived as <span class="citation">(Henderson 1984)</span> <span class="math display">\[\begin{align*}
 \text{PEV}(u) &amp;= \text{Var}(\widehat{u} - u) \\ 
 &amp;= \text{Var}(u | \widehat{u}) \\ 
 &amp;= (\mathbf{Z'MZ} + \mathbf{K}^{-1} \lambda)^{-1} \sigma^2_{\epsilon} \\
 &amp;= \mathbf{C}^{22} \sigma^2_{\epsilon}, 
-\end{align*}\]</span> where <span class="math inline">\(\mathbf{M} = \mathbf{I} - \mathbf{X}(\mathbf{X}' \mathbf{X})^{-}\mathbf{X}'\)</span> is the absorption (projection) matrix for fixed effects.</p>
+\end{align*}\]</span> where <span class="math inline">\(\mathbf{M} = \mathbf{I} - \mathbf{X}(\mathbf{X}' \mathbf{X})^{-}\mathbf{X}'\)</span> is the absorption (projection) matrix for fixed effects and <span class="math inline">\(\mathbf{C}^{22}\)</span> is the lower right quadrant of the inverse of coefficient matrix. Note that <span class="math inline">\(\text{PEV}(u)\)</span> can be viewed as the posterior variance of u.</p>
 </div>
-<div id="variance-of-estimates-of-management-units-effects" class="section level3">
-<h3>Variance of estimates of management units effects</h3>
-<p>The derivation of PEV oftentimes results in a heavy computational demanding for the high-dimensional dataset. <span class="citation">Kennedy and Trus (1993)</span> proposed a direct approximation of mean PEV over unit (PEV_Mean) based on VE, that is</p>
-<span class="math display">\[\begin{align}
-\text{Var}(\widehat{b}) = [\mathbf{X}' \mathbf{X} - \mathbf{X}' \mathbf{Z}(\mathbf{Z'Z} + \mathbf{K}^{-1} \lambda)^{-1}\mathbf{Z}' \mathbf{X}]^{-1}\sigma^2_{\epsilon}.
-\end{align}\]</span>
-<p>However, <span class="citation">Holmes, Dodds, and Lee (2017)</span> pointed out this equation is not an exact approximation of PEV_Mean, and an according correction is suggested to achieve the equality. When unit effect is the only fixed effect including in the model, an approximate mean of PEV over unit is <span class="math display">\[\begin{equation*}
-\text{PEV_Mean} = \text{Var}(\widehat{b}) - \sigma^2_{\epsilon} (\mathbf{X}' \mathbf{X})^{-1},
-\end{equation*}\]</span> where <span class="math inline">\(\sigma^2_{\epsilon} (\mathbf{X}' \mathbf{X})^{-1}\)</span> corrects the number of records within management units. An additional correction was added to derive the mean of PEV over unit which accounts for the additional fixed effects excepts unit effect in the model as <span class="citation">(Holmes, Dodds, and Lee 2017)</span> <span class="math display">\[\begin{align*}
-\text{PEV_Mean} &amp;= \text{Var}(\widehat{b_1}) - \sigma^2_{\epsilon} (\mathbf{X_1}' \mathbf{X_1})^{-1} \\
+<div id="variance-of-unit-effect-estimates" class="section level3">
+<h3>Variance of unit effect estimates</h3>
+<p>An alternative option for the choice of core function is to use VE, which is based on the variance-covariance matrix of estimated management unit or contemporary group effects. <span class="citation">Kennedy and Trus (1993)</span> argued that mean PEV over unit (PEV_Mean) defined as the average of PEV between individuals within the same management unit can be approximated by VE = Var(<span class="math inline">\(\hat{b}\)</span>) as <span class="math display">\[\begin{align}
+\text{VE0} &amp;= \text{Var}(\widehat{b}) \\
+&amp;= [\mathbf{X}' \mathbf{X} - \mathbf{X}' \mathbf{Z}(\mathbf{Z'Z} + \mathbf{K}^{-1} \lambda)^{-1}\mathbf{Z}' \mathbf{X}]^{-1}\sigma^2_{\epsilon}\\
+&amp;\approx \text{PEV_Mean}
+\end{align}\]</span></p>
+<p><span class="citation">Holmes, Dodds, and Lee (2017)</span> pointed out that the agreement between PEV_Mean and VE0 depends on the number fixed effects other than mangement group fitted in the model. They proposed exact ways to derive PEVMean as a function of VE and suggested to add some correction factors. When unit effect is the only fixed effect included in the model, the exact PEV_Mean can be obtained as <span class="math display">\[\begin{equation*}
+\text{VE1} = \text{PEV_Mean} = \text{Var}(\widehat{b}) - \sigma^2_{\epsilon} (\mathbf{X}' \mathbf{X})^{-1},
+\end{equation*}\]</span> where <span class="math inline">\((\mathbf{X}' \mathbf{X})^{-1}\)</span>is a diagonal matrix with <span class="math inline">\(ith\)</span> diagonal element equal to <span class="math inline">\(\frac{1}{n_i}\)</span> and <span class="math inline">\(n_i\)</span> is the number of records in management unit <span class="math inline">\(i\)</span>. Thus <span class="math inline">\(\sigma^2_{\epsilon}(\mathbf{X}' \mathbf{X})^{-1}\)</span> corrects the number of records within management units. Accouning for additional fixed effects beyond unit effect when computing PEV_Mean is given by <span class="math display">\[\begin{align*}
+\text{VE2} &amp;= \text{PEV_Mean} \\
+&amp;= \text{Var}(\widehat{b_1}) - \sigma^2_{\epsilon} (\mathbf{X_1}' \mathbf{X_1})^{-1} \\
 &amp; + (\mathbf{X_1}'\mathbf{X_1})^{-1}\mathbf{X_1}'\mathbf{X_2}\text{Var}(\widehat{b_2})\mathbf{X_2}'\mathbf{X_1}(\mathbf{X_1}'\mathbf{X_1})^{-1} \\
 &amp; + (\mathbf{X_1}'\mathbf{X_1})^{-1}\mathbf{X_1}'\mathbf{X_2}\text{Cov}(\widehat{b_2}, \widehat{b_1}) \\
 &amp; + \text{Cov}(\widehat{b_1}, \widehat{b_2})\mathbf{X_2}'\mathbf{X_1}(\mathbf{X_1}'\mathbf{X_1})^{-1}
-\end{align*}\]</span> where the <span class="math inline">\(\mathbf{X_1}\)</span> and <span class="math inline">\(\mathbf{X_2}\)</span> represent incidence matrix for management units and other fixed effects, respectively. The <span class="math inline">\(\widehat{b_1}\)</span> refers to the estimates of management units effects, and <span class="math inline">\(\widehat{b_2}\)</span> indicates the estimates of other fixed effects.</p>
+\end{align*}\]</span> where <span class="math inline">\(\mathbf{X_1}\)</span> and <span class="math inline">\(\mathbf{X_2}\)</span> represent incidence matrix for management units and other fixed effects, respectively, and <span class="math inline">\(\widehat{b_1}\)</span> and <span class="math inline">\(\widehat{b_2}\)</span> refer to the estimates of management units effects and other fixed effects, respectively <span class="citation">(Holmes, Dodds, and Lee 2017)</span>.</p>
 </div>
 </div>
 <div id="connectedness-metrics" class="section level2">
 <h2>Connectedness Metrics</h2>
-<p>In general, connectedness metrics can be grouped into two sets, which are the function of PEV and VE, respectively.</p>
-<div id="function-of-pev" class="section level3">
-<h3>Function of PEV</h3>
-<div id="prediction-error-variance-of-difference" class="section level4">
-<h4>Prediction Error Variance of Difference</h4>
-<p>The PEVD <span class="citation">(Kennedy and Trus 1993)</span> measures the prediction error variance difference of breeding values between individuals from different management units. The PEVD between two individuals of <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> can be expressed as <span class="math display">\[\begin{align*} 
+<div id="prediction-error-variance-of-difference" class="section level3">
+<h3>Prediction error variance of difference</h3>
+<p>A PEVD metric measures the prediction error variance difference of breeding values between individuals from different management units <span class="citation">(Kennedy and Trus 1993)</span>. The PEVD between two individuals of <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is expressed as <span class="math display">\[\begin{align}
  \text{PEVD}(\widehat{u_i} - \widehat{u_j})  &amp;= [ \text{PEV}(\widehat{u_i}) + \text{PEV}(\widehat{u_j}) - 2  \text{PEC}(\widehat{u_i}, \widehat{u_j})]  \\
  &amp;= (\mathbf{C}^{22}_{ii} - \mathbf{C}^{22}_{ij} - \mathbf{C}^{22}_{ji} + \mathbf{C}^{22}_{jj}) \sigma^2_{\epsilon} \\
-&amp;= (\mathbf{C}^{22}_{ii}  + \mathbf{C}^{22}_{jj} - 2\mathbf{C}^{22}_{ij}) \sigma^2_{\epsilon} , 
-\end{align*}\]</span> where PEC<span class="math inline">\(_{ij}\)</span> is the off-diagonal element of the PEV matrix which indicates the prediction error covariance or covariance between errors of genetic values.</p>
+&amp;= (\mathbf{C}^{22}_{ii}  + \mathbf{C}^{22}_{jj} - 2\mathbf{C}^{22}_{ij}) \sigma^2_{\epsilon}, 
+\end{align}\]</span> where PEC<span class="math inline">\(_{ij}\)</span> is the off-diagonal element of the PEV matrix corresponding to the prediction error covariance between errors of genetic values.</p>
 <ul>
-<li><p><strong>Individual Average PEVD</strong> A calculation of summary PEVD can be traced back to <span class="citation">Kennedy and Trus (1993)</span> as average PEV of all pairwise differences between individuals between two management units <span class="math display">\[\begin{align*}
+<li><p><strong>Individual Average PEVD</strong> Using this pairwise PEVD equation, the PEVD can be first calculated at the individual level, and then aggregated and summarized at the unit level. A calculation of summary PEVD can be traced back to <span class="citation">Kennedy and Trus (1993)</span> as the average of PEVD between individuals across two management units <span class="math display">\[\begin{align*}
 \text{PEVD}_{i'j'} &amp;= \frac{1}{n_{i'} \cdot n_{j'}} \sum \text{PEVD}_{i'j'} ,
-\end{align*}\]</span> <span class="math inline">\(n_{i'}\)</span> and <span class="math inline">\(n_{j'}\)</span> are the total number of records in units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span>, accordingly. The <span class="math inline">\(\sum \text{PEVD}_{i'j'}\)</span> was the sums of all pairwise differences between two units.</p></li>
-<li><p><strong>Group Average PEVD</strong> We can also summarize PEVD using average PEV within and across management units <span class="math display">\[\begin{align*}
+\end{align*}\]</span> where <span class="math inline">\(n_{i'}\)</span> and <span class="math inline">\(n_{j'}\)</span> are the total number of records in units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span>, respectively and the <span class="math inline">\(\sum \text{PEVD}_{i'j'}\)</span> is the sums of all pairwise differences between two units.</p></li>
+<li><p><strong>Group Average PEVD</strong> A second summary method of group average PEVD first computes the PEV_Mean of <span class="math inline">\(i'\)</span>th and <span class="math inline">\(j'\)</span>th units and mean prediction error covariance (PEC_Mean) between i′th and j′th units, and then plugs into the pairwise PEVD equation. <span class="math display">\[\begin{align*}
 \text{PEVD}_{i'j'} &amp;= \overline{\text{PEV}}_{i'i'} + \overline{\text{PEV}}_{j'j'} -2\overline{\text{PEC}}_{i'j'},
-\end{align*}\]</span> where the <span class="math inline">\(\overline{\text{PEV}}_{i'i'}\)</span>, <span class="math inline">\(\overline{\text{PEV}}_{i'i'}\)</span> and <span class="math inline">\(\overline{\text{PEC}}_{i'j'}\)</span> indicate the mean PEV in <span class="math inline">\(i'\)</span> management unit, <span class="math inline">\(j'\)</span> mamagement unit, and mean prediction error covariance between <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span> units.</p></li>
-<li><p><strong>Contrast PEVD</strong> Alternatively, a summary of PEVD across any pair of management units under a contrast form is <span class="citation">(Laloë 1993; Yu et al. 2017)</span><br />
+\end{align*}\]</span> where the <span class="math inline">\(\overline{\text{PEV}}_{i'i'}\)</span>, <span class="math inline">\(\overline{\text{PEV}}_{j'j'}\)</span>, and <span class="math inline">\(\overline{\text{PEC}}_{i'j'}\)</span> denote PEV_Mean in <span class="math inline">\(i′\)</span>th and <span class="math inline">\(j′\)</span>th units, and PEC_Mean between <span class="math inline">\(i′\)</span>th and <span class="math inline">\(j′\)</span>th units.</p></li>
+<li><p><strong>Contrast PEVD</strong> The third summary method is PEVD of contrast between a pair of units<br />
 <span class="math display">\[\begin{align*}
 \text{PEVD}(\mathbf{x}) &amp;= \mathbf{x}' \mathbf{C}^{22} \mathbf{x} \sigma^2_{\epsilon},
-\end{align*}\]</span> where the sum of elements in <span class="math inline">\(\mathbf{x}\)</span> equals to zero.</p></li>
+\end{align*}\]</span> where <span class="math inline">\(\mathbf{x}\)</span> is a contrast vector involving <span class="math inline">\(\frac{1}{n_{i'}}\)</span>, <span class="math inline">\(\frac{1}{n_{j'}}\)</span> and <span class="math inline">\(0\)</span> corresponding to individuals belonging to <span class="math inline">\(i′\)</span>th, <span class="math inline">\(j′\)</span>th, and the remaining units. The sum of elements in x equals to zero.</p></li>
 </ul>
-</div>
 <div id="coefficient-of-determination" class="section level4">
 <h4>Coefficient of Determination</h4>
-<div class="line-block">      The coefficient of determination (CD) measures the precision of the estimates breeding values. The pairwise CD between individual <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is defined as <span class="citation">(Laloë, Phocas, and Menissier 1996)</span></div>
-<span class="math display">\[\begin{align*}
-\text{CD}_{ij} &amp;= \frac{\text{Var}(\mathbf{u}) - \text{Var}(\mathbf{u}|\mathbf{\widehat{u}})}{\text{Var}(\mathbf{u})} \\
+<p>A CD metric measures the precision of genetic values and can be interpreted as the square of the correlation between the predicted and the true difference in the genetic values or the ratio between posterior and prior variances of genetic values <span class="math inline">\(\mathbf{u}\)</span> <span class="citation">(Laloë 1993)</span>. Notable difference of CD from PEVD is that it penalizes connectedness measurements when across management units include individuals that are too genetically similar <span class="citation">(Yu et al. 2017)</span>. A pairwise CD between individuals <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is given as <span class="math display">\[\begin{align*}
+\text{CD}_{ij} &amp;= \frac{\text{Var}(\mathbf{\hat{u}})}{\text{Var}(\mathbf{u})}\\
+&amp;= \frac{\text{Var}(\mathbf{u}) - \text{Var}(\mathbf{u}|\hat{\mathbf{u}})}{\text{Var}(\mathbf{u})} \\
 &amp;= 1 - \frac{\text{Var}(\mathbf{u}|\mathbf{\widehat{u}})}{\text{Var}(\mathbf{u})} \\
 &amp;= 1 - \lambda \frac{\mathbf{C}^{22}_{ii} + \mathbf{C}^{22}_{jj} - 2\mathbf{C}^{22}_{ij} }{\mathbf{K}_{ii} + \mathbf{K}_{jj} - 2\mathbf{K}_{ij}},
-\end{align*}\]</span>
-<p>The <span class="math inline">\(ii\)</span> and <span class="math inline">\(jj\)</span> indicate the diagonal elements of the <span class="math inline">\(\mathbf{K}\)</span> matrix for <span class="math inline">\(ith\)</span> and <span class="math inline">\(jth\)</span> individuals, accordingly. The <span class="math inline">\(ij\)</span> refers to the off-diagonal elements of the K matrix, and <span class="math inline">\(\lambda\)</span> is variance ration of <span class="math inline">\(\frac{\sigma^2_e}{\sigma^2_a}\)</span>.</p>
+\end{align*}\]</span> The <span class="math inline">\(ii\)</span> and <span class="math inline">\(jj\)</span> indicate the diagonal elements of the <span class="math inline">\(\mathbf{K}\)</span> matrix for <span class="math inline">\(ith\)</span> and <span class="math inline">\(jth\)</span> individuals, accordingly. The <span class="math inline">\(ij\)</span> refers to the off-diagonal elements of the K matrix, and <span class="math inline">\(\lambda\)</span> is variance ration of <span class="math inline">\(\frac{\sigma^2_e}{\sigma^2_a}\)</span>.</p>
 <ul>
-<li><p><strong>Individual Average CD</strong> The CD between individuals across two management units can be also derived with average PEV of all pairwise differences <span class="math display">\[\begin{align*}
-\text{CD}_{i'j'} &amp;= 1 - \frac{\frac{1}{n_{i'} \cdot n_{j'}} \cdot \sigma^2_e \cdot \sum \mathbf{(C^{22}}_{i'i'} + \mathbf{C^{22}}_{j'j'} - 2\mathbf{C^{22}}_{i'j'})}{\frac{1}{n_{i'} \cdot n_{j'}} \cdot \sigma^2_u \cdot \sum (\mathbf{K}_{i'i'} + \mathbf{K}_{j'j'} - 2\mathbf{K}_{i'j'})}\\
+<li><p><strong>Individual Average CD</strong> Individual average CD is derived from the average of pairwise CD at individual level across two units. <span class="math display">\[\begin{align*}
+\text{CD}_{i'j'} &amp;= 1 - \lambda \cdot \frac{\frac{1}{n_{i'} \cdot n_{j'}} \cdot \sum \mathbf{(C^{22}}_{i'i'} + \mathbf{C^{22}}_{j'j'} - 2\mathbf{C^{22}}_{i'j'})}{\frac{1}{n_{i'} \cdot n_{j'}} \cdot \sum (\mathbf{K}_{i'i'} + \mathbf{K}_{j'j'} - 2\mathbf{K}_{i'j'})}\\
+&amp;= 1 - \frac{\frac{1}{n_{i'} \cdot n_{j'}} \cdot \sigma^2_e \cdot \sum \mathbf{(C^{22}}_{i'i'} + \mathbf{C^{22}}_{j'j'} - 2\mathbf{C^{22}}_{i'j'})}{\frac{1}{n_{i'} \cdot n_{j'}} \cdot \sigma^2_u \cdot \sum (\mathbf{K}_{i'i'} + \mathbf{K}_{j'j'} - 2\mathbf{K}_{i'j'})}\\
 &amp;= 1 - \frac{\frac{1}{n_{i'} \cdot n_{j'}}\sum \text{PEVD}_{i' j'}}{\frac{1}{n_{i'} \cdot n_{j'}} \cdot \sigma^2_u \cdot \sum (\mathbf{K}_{i'i'} + \mathbf{K}_{j'j'} - 2\mathbf{K}_{i'j'})}\\
 &amp;= 1 - \frac{\sum \text{PEVD}_{i'j'}}{\sigma^2_u \cdot \sum (\mathbf{K}_{i'i'} + \mathbf{K}_{j'j'} - 2\mathbf{K}_{i'j'})}.
 \end{align*}\]</span></p></li>
-<li><p><strong>Group Average CD</strong> Similar, average PEV within and across management units can be used to calculate the CD summary statistic <span class="math display">\[\begin{align*}
-\text{CD}_{i'j'} &amp;= 1 - \frac{\sigma^2_e \cdot \overline{\mathbf{C^{22}}}_{i'i'} + \overline{\mathbf{C^{22}}}_{j'j'} -2\overline{\mathbf{C^{22}}}_{i'j'}}{\sigma^2_u \cdot  (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}\\
+<li><p><strong>Group Average CD</strong> Similar to the group average PEVD statistic, PEV_Mean and PEC_Mean can be used to summarize CD at the unit level. <span class="math display">\[\begin{align*}
+\text{CD}_{i'j'} &amp;= 1 - \lambda \cdot \frac{ \overline{\mathbf{C^{22}}}_{i'i'} + \overline{\mathbf{C^{22}}}_{j'j'} -2\overline{\mathbf{C^{22}}}_{i'j'}}{ (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})} \nonumber \\
+&amp;= 1 - \frac{\sigma^2_e \cdot \overline{\mathbf{C^{22}}}_{i'i'} + \overline{\mathbf{C^{22}}}_{j'j'} -2\overline{\mathbf{C^{22}}}_{i'j'}}{\sigma^2_u \cdot  (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}\\
 &amp;= 1 - \frac{\overline{\text{PEV}}_{i'i'} + \overline{\text{PEV}}_{j'j'} -2\overline{\text{PEC}}_{i'j'}}{\sigma^2_u \cdot (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}\\
 &amp;= 1 - \frac{\text{PEVD}_{i'j'}}{\sigma^2_u \cdot (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}.
-\end{align*}\]</span> The <span class="math inline">\(\overline{\mathbf{K}}_{i'i'}\)</span>, <span class="math inline">\(\overline{\mathbf{K}}_{j'j'}\)</span> and <span class="math inline">\(\overline{\mathbf{K}}_{i'j'}\)</span> refer to the mean of relationship coefficients in the management unit <span class="math inline">\(i'\)</span>, <span class="math inline">\(j'\)</span>, and mean relationship coefficients between two units.</p></li>
-<li><p><strong>Contrast CD</strong> A contrast notation of summary CD between any pair of management units is <span class="citation">(Laloë, Phocas, and Menissier 1996)</span> <span class="math display">\[\begin{align*}
+\end{align*}\]</span> The <span class="math inline">\(\overline{\mathbf{K}}_{i'i'}\)</span>, <span class="math inline">\(\overline{\mathbf{K}}_{j'j'}\)</span> and <span class="math inline">\(\overline{\mathbf{K}}_{i'j'}\)</span> refer to the mean of relationship coefficients in the management unit <span class="math inline">\(i'\)</span>, <span class="math inline">\(j'\)</span>, and the mean relationship coefficients between two units.</p></li>
+<li><p><strong>Contrast CD</strong> A contrast notation of CD between any pair of management units is showed as <span class="citation">(Laloë, Phocas, and Menissier 1996)</span> <span class="math display">\[\begin{align*}
 \text{CD}(\mathbf{x}) &amp;= 1 - \frac{\text{Var}(\mathbf{x}'\mathbf{u}|\mathbf{\widehat{u}})}{\text{Var}(\mathbf{x}'\mathbf{u})} \\
-&amp;= 1- \lambda \frac{\mathbf{x}' \mathbf{C}^{22} \mathbf{x} }{ \mathbf{x}' \mathbf{K} \mathbf{x}}\\
+&amp;= 1- \lambda \cdot \frac{\mathbf{x}' \mathbf{C}^{22} \mathbf{x} }{ \mathbf{x}' \mathbf{K} \mathbf{x}}\\
 &amp;= 1- \frac{\mathbf{x}' \mathbf{C}^{22} \mathbf{x} \cdot \sigma^2_e }{ \mathbf{x}' \mathbf{K} \mathbf{x} \cdot \sigma^2_u}\\
-&amp;= 1- \frac{\text{PEVD(x)}}{ \mathbf{x}' \mathbf{K} \mathbf{x} \cdot \sigma^2_u},
-\end{align*}\]</span> where <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{K}\)</span> is a contrast vector and a relationship matrix defined above.</p></li>
+&amp;= 1- \frac{\text{PEVD(x)}}{ \mathbf{x}' \mathbf{K} \mathbf{x} \cdot \sigma^2_u}.
+\end{align*}\]</span></p></li>
 </ul>
 </div>
 <div id="prediction-error-correlation" class="section level4">
 <h4>Prediction Error Correlation</h4>
-<div class="line-block">      The pairwise r statistic <span class="citation">(Lewis et al. 1999)</span> between individual <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> can be derived from PEV matrix to a predictive error correlation matrix as</div>
-<span class="math display">\[\begin{align*}
+<p>Prediction error correlation, known as pairwise r statistic, is computed with the elements of the PEV matrix and the prediction error correlation between individuals <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is defined as <span class="citation">(Lewis et al. 1999)</span> <span class="math display">\[\begin{align*}
 \text{r}_{ij} = \frac{\text{PEC}(\widehat{u_i}, \widehat{u_j})}{\sqrt{\text{PEV}(\widehat{u_i}) \cdot \text{PEV}(\widehat{u_j})}}.
-\end{align*}\]</span>
+\end{align*}\]</span></p>
 <ul>
-<li><p><strong>Individual connectedness</strong> The summary of individual connectedness calculates pairwise r for all pair of individuals followed by averaging all r across management units: <span class="math display">\[\begin{align*}
+<li><p><strong>Individual average r</strong> The individual average r computes pairwise r between all pairs of individuals followed by averaging all pairwise r measures across units. <span class="math display">\[\begin{align*}
 \text{r}_{i'j'} = \frac{1}{n_{i'} \cdot n_{j'}} \cdot \sum{\frac{\text{PEC}(\widehat{u_{i'}}, \widehat{u_{j'}})}{\sqrt{\text{PEV}(\widehat{u_{i'}}) \cdot \text{PEV}(\widehat{u_{j'}})}}}.
 \end{align*}\]</span></p></li>
-<li><p><strong>Group connectedness</strong> One of the summary statistics of r is flock connectedness, which takes the average of PEV matrix by management units followed by a ratio to r. The Flock r between two management units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span> is given by <span class="citation">(Kuehn et al. 2008)</span><br />
+<li><p><strong>Group average r </strong> Group average r, known as flock connectedness, is computed from the ratio of PEV_Mean and PEC_Mean <span class="citation">(Kuehn et al. 2008)</span>. This group average connectedness r between two units <span class="math inline">\(i′\)</span> and <span class="math inline">\(j′\)</span> is given as<br />
 <span class="math display">\[\begin{align*}
 \text{r}_{i'j'} &amp;= \frac{\overline{\text{PEC}}_{i'j'}}{\sqrt{\overline{\text{PEV}}_{i'i'} \cdot \overline{\text{PEV}}_{j'j'}}}\\
 &amp;=\frac{ 1/n_{i'} \sum \text{PEC}_{i' j'} 1/n_{j'}}{   \sqrt{ (1/n_{i'})^2 \sum \text{PEV}_{i' i'} \cdot (1/n_{j'})^2 \sum \text{PEV}_{j' j'} }   } \\
-&amp;= \frac{ \sum \text{PEC}_{i' j'} }{   \sqrt{  \sum \text{PEV}_{i' i'} \cdot  \sum \text{PEV}_{j' j'} }   }, 
-\end{align*}\]</span> where <span class="math inline">\(n_{i'}\)</span> and <span class="math inline">\(n_{j'}\)</span> indcate the number of individuals in units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span>, respectively.</p></li>
-<li><p><strong>Contrast r</strong> We can also summarize r under a contrast format <span class="math display">\[\begin{align*}
+&amp;= \frac{ \sum \text{PEC}_{i' j'} }{   \sqrt{  \sum \text{PEV}_{i' i'} \cdot  \sum \text{PEV}_{j' j'} }   }. 
+\end{align*}\]</span></p></li>
+<li><p><strong>Contrast r</strong> The contrast format of r is defined as<br />
+<span class="math display">\[\begin{align*}
 \text{r}(\mathbf{x}) &amp;= \mathbf{x}' \mathbf{rx}.  
-\end{align*}\]</span> The <span class="math inline">\(\mathbf{r}\)</span> is a correlation matrix with the element of <span class="math inline">\(r_{ij} = \frac{\text{PEC}(\widehat{u_i}, \widehat{u_j})}{\sqrt{\text{PEV}(\widehat{u_i}) \cdot \text{PEV}(\widehat{u_j})}}\)</span>, which indicates the paiwise prdiction error correlation between individual <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p></li>
+\end{align*}\]</span></p></li>
 </ul>
 </div>
-</div>
-<div id="function-of-ve" class="section level3">
-<h3>Function of VE</h3>
-<div id="variance-of-estimates-of-unit-effects-differences" class="section level4">
-<h4>Variance of estimates of unit effects differences</h4>
+<div id="variance-of-differences-in-unit-effects-ved" class="section level4">
+<h4>Variance of differences in unit effects (VED)</h4>
+<p>The metric of VED is a function of VE, which can be used for connectedness measurement. Differ from PEV-derived metrics which includes two steps computation at the individual level and unit level, the VE-derived metrics using a single-step procedure to calculate unit connectedness directly. Moreover, the VE-derived metrics are expected to create less computation requirement according to the number of fixed effects are oftentimes smaller than the number of observations <span class="citation">(Holmes, Dodds, and Lee 2017)</span>. In general, the VE-derived metrics can be classified based on the number of fixed effects to be corrected, which includes no correction (0), correction for one fixed effect (1), and correction for two or more fixed effects (2) <span class="citation">(Holmes, Dodds, and Lee 2017)</span>.</p>
 <ul>
-<li><p><strong>VED0</strong> The VED0<span class="citation">(Kennedy and Trus 1993)</span> statistic estimates connectedness with the variance of differences of management units effects. The VED between two units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span> is defined as <span class="math display">\[\begin{align*}
-\text{VED}_{i'j'} &amp;=
-\text{Var}(\widehat{b})_{i'i'} + \text{Var}(\widehat{b})_{j'j'} - 2\text{Cov}(\widehat{b})_{i'j'},
-\end{align*}\]</span> where Var<span class="math inline">\((\widehat{b})_{i'i'}\)</span>, Var<span class="math inline">\((\widehat{b})_{j'j'}\)</span> and Cov<span class="math inline">\((\widehat{b})_{i'j'}\)</span> indicate variance of management unit <span class="math inline">\(i'\)</span>, <span class="math inline">\(j'\)</span> and covariance between two units, respectively.</p></li>
-<li><p><strong>VED1 &amp; VED2</strong> <span class="citation">Holmes, Dodds, and Lee (2017)</span> suggested quantifying group average PEVD using PEV_Mean <span class="math display">\[\begin{align*}
-\text{PEVD}_{i'j'} &amp;= \text{PEV_Mean}_{i'i'} + \text{PEV_Mean}_{j'j'} -2\text{PEV_Mean}_{i'j'},
-\end{align*}\]</span> , where PEV_Mean could be directly derived from <span class="math inline">\(\text{Var}(\widehat{b})\)</span> by adding correction factors.</p></li>
+<li><p><strong>VED0</strong>: Using the summary method of the group average PEVD, the VED0 statistic estimates PEVD alike connectedness with VE0 rather than PEV_Mean <span class="citation">(Kennedy and Trus 1993)</span>. The VED0 between two units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span> is defined as <span class="math display">\[\begin{align*}
+\text{VED0}_{i'j'} &amp;=
+\text{VE0}_{i'i'} + \text{VE0}_{j'j'} - 2\text{VE0}_{i'j'}.
+\end{align*}\]</span></p></li>
+<li><p><strong>VED1</strong>: The VED1 statistic corrects the number of observations in unit by replacing the VE0 with VE1. Using the equation of VED0, the VED1 between two units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span> is defined as <span class="math display">\[\begin{align*}
+\text{VED1}_{i'j'} &amp;= \text{VE1}_{i'i'} + \text{VE1}_{j'j'} -2\text{VE1}_{i'j'}.
+\end{align*}\]</span></p></li>
+<li><p><strong>VED2</strong>: Following the equation of VED0, additional fixed effects other than unit effect can be accounted by replacing VE0 with VE2. The VED2 between units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span> can be calculated as<br />
+<span class="math display">\[\begin{align*}
+\text{VED2}_{i'j'} &amp;= \text{VE2}_{i'i'} + \text{VE2}_{j'j'} -2\text{VE2}_{i'j'}.
+\end{align*}\]</span></p></li>
 </ul>
 </div>
 <div id="coefficient-of-determination-of-ved" class="section level4">
 <h4>Coefficient of Determination of VED</h4>
 <ul>
-<li><p><strong>CDVED0</strong> We can also use the variance of estimates management units effects to approximate CD as <span class="math display">\[\begin{align*}
-\text{CD}_{i'j'} &amp;= 1 - \frac{\text{Var}(\widehat{b})_{i'i'} + \text{Var}(\widehat{b})_{j'j'} - 2\text{Cov}(\widehat{b})_{i'j'}}{\sigma^2_u \cdot (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}.
+<li><p><strong>CDVED0</strong> The CDVED0 statistic can be considered as a group average CD calculating with VE0. A pairwise CDVED0 between two units i′ and j′ is given by <span class="math display">\[\begin{align*}
+\text{CDVED0}_{i'j'} &amp;= 1 - \frac{\text{VE0}_{i'i'} + \text{VE0}_{j'j'} - 2\text{VE0}_{i'j'}}{\sigma^2_u \cdot (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}.
 \end{align*}\]</span></p></li>
-<li><p><strong>CDVED1 &amp; CDVED2</strong> Analogously, CD could be calculated with a correction of <span class="math inline">\(\text{Var}(\widehat{b})\)</span> (<span class="citation">Holmes, Dodds, and Lee (2017)</span>) as <span class="math display">\[\begin{align*}
-\text{CD}_{i'j'} &amp;= 1 - \frac{\sigma^2_e \cdot \overline{\mathbf{C^{22}}}_{i'i'} + \overline{\mathbf{C^{22}}}_{j'j'} -2\overline{\mathbf{C^{22}}}_{i'j'}}{\sigma^2_u \cdot  (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}\\
-&amp;= 1 - \frac{\text{PEV_Mean}_{i'i'} + \text{PEV_Mean}_{j'j'} -2\text{PEV_Mean}_{i'j'}}{\sigma^2_u \cdot (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}.
+<li><p><strong>CDVED1</strong> Similar, the CDVED1 is defined by replacing VE0 with VE1 <span class="math display">\[\begin{align*}
+\text{CDVED1}_{i'j'} &amp;= 1 - \frac{\text{VE1}_{i'i'} + \text{VE1}_{j'j'} - 2\text{VE1}_{i'j'}}{\sigma^2_u \cdot (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}.
+\end{align*}\]</span></p></li>
+<li><p><strong>CDVED2</strong> The CDVED2 statistic which accounts for the fixed effects other than unit effect is defined by replacing VE0 with VE2. <span class="math display">\[\begin{align*}
+\text{CDVED2}_{i'j'} &amp;= 1 - \frac{\text{VE2}_{i'i'} + \text{VE2}_{j'j'} - 2\text{VE2}_{i'j'}}{\sigma^2_u \cdot (\overline{\mathbf{K}}_{i'i'} + \overline{\mathbf{K}}_{j'j'} - 2\overline{\mathbf{K}}_{i'j'})}.
 \end{align*}\]</span></p></li>
 </ul>
-<p>The <span class="math inline">\(\text{PEV_Mean}_{i'i'}\)</span>, <span class="math inline">\(\text{PEV_Mean}_{j'j'}\)</span> and <span class="math inline">\(\text{PEV_Mean}_{i'j'}\)</span> are average PEV over management unit <span class="math inline">\(i'\)</span>, <span class="math inline">\(j'\)</span> and average of prediction error covariance between management units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span>, respectively.</p>
 </div>
 <div id="connectedness-rating-cr" class="section level4">
 <h4>Connectedness Rating (CR)</h4>
 <ul>
-<li><p><strong>CRO</strong> <span class="citation">Mathur, Sullivan, and Chesnais (2002)</span> proposed using CR approximates flock connectedness by replacing PEV matrix with the variance of differences of management units estimates. The CR of two management units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span> is given by <span class="math display">\[\begin{align*}
-\text{CR}_{i'j'} &amp;=
-\frac{\text{Cov}(\widehat{b})_{i'j'} }{ \sqrt{ \text{Var}(\widehat{b})_{i'i'} \cdot  \text{Var}(\widehat{b})_{j'j'}}}.
+<li><p><strong>CR0</strong> The CR statistic, a group average r alike connectedness, is originally proposed by <span class="citation">(Mathur, Sullivan, and Chesnais 2002)</span> which replaced PEV_Meam with VE0 in the equation of group average r. The pairwise CR0 between two units <span class="math inline">\(i'\)</span> and <span class="math inline">\(j'\)</span> is defined as <span class="math display">\[\begin{align*}
+\text{CR0}_{i'j'} &amp;=
+\frac{\text{VE0}_{i'j'} }{ \sqrt{ \text{VE0}_{i'i'} \cdot  \text{VE0}_{j'j'}}}.
 \end{align*}\]</span></p></li>
-<li><p><strong>CR1 &amp; CR2</strong> The prediction error correlation can be derived with aforementioned correction of variance of estimates of management units effects <span class="citation">(Holmes, Dodds, and Lee 2017)</span> <span class="math display">\[\begin{align*}
-\text{r}_{i'j'} &amp;= \frac{\text{PEV_Mean}_{i'j'}}{\sqrt{\text{PEV_Mean}_{i' i'} \cdot \text{PEV_Mean}_{j' j'}}}. 
+<li><p><strong>CR1</strong> Following the equation of CR0, the CR1 statistic accounts for the number of observations in unit by replacing VE0 with VE1. <span class="math display">\[\begin{align*}
+\text{CR1}_{i'j'} &amp;=
+\frac{\text{VE1}_{i'j'} }{ \sqrt{ \text{VE1}_{i'i'} \cdot  \text{VE1}_{j'j'}}}.
+\end{align*}\]</span></p></li>
+<li><p><strong>CR2</strong> In a similar way, the CR2 is defined using VE2 rather than VE0 following the equation of CR0. <span class="math display">\[\begin{align*}
+\text{CR2}_{i'j'} &amp;=
+\frac{\text{VE2}_{i'j'} }{ \sqrt{ \text{VE2}_{i'i'} \cdot  \text{VE2}_{j'j'}}}.
 \end{align*}\]</span></p></li>
 </ul>
 </div>
@@ -354,73 +360,202 @@ N \left [
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">install_github</span>(<span class="st">'HaipengU/GCA'</span>)</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(GCA)</a></code></pre></div>
 </div>
-<div id="load-example-cattle-dataset-in-gca-package." class="section level3">
-<h3>Load example cattle dataset in GCA package.</h3>
-<p>The cattle dataset of <code>GCcattle</code> contains two files of <code>cattle.pheno</code> and <code>cattle.W</code>, which include phenotype and marker information, respectively. The details can be checked with <code>?GCcattle</code>.</p>
+<div id="data-preparation" class="section level3">
+<h3>Data preparation</h3>
+<p>The cattle dataset of <code>GCcattle</code> contains two files of <code>cattle.pheno</code> and <code>cattle.W</code>, which include phenotype and marker information, respectively. The details can be checked with <code>?GCcattle</code>. Some matrices and parameters are set up here for the following examples</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(GCA)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">data</span>(GCcattle)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">dim</span>(cattle.pheno) <span class="co"># phenotype</span></a></code></pre></div>
-<pre><code>## [1] 530   6</code></pre>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">dim</span>(cattle.pheno) <span class="co"># phenotypes + fixed effects</span></a></code></pre></div>
+<pre><code>## [1] 2500    6</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">dim</span>(cattle.W) <span class="co"># marker matrix</span></a></code></pre></div>
-<pre><code>## [1]   530 10000</code></pre>
+<pre><code>## [1]  2500 10000</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">sigma2a &lt;-<span class="st"> </span><span class="fl">0.6</span> <span class="co"># additive genetic variance</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">sigma2e &lt;-<span class="st"> </span><span class="fl">0.4</span> <span class="co"># residual variance</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">X1 &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Unit)) <span class="co"># design matrix of unit effect with intercept excluded</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">X2 &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Unit) <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Sex)) <span class="co"># design matrix of unit effect and sex</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">A &lt;-<span class="st"> </span><span class="kw">computeA</span>(cattle.pheno<span class="op">$</span>Progeny, cattle.pheno<span class="op">$</span>Sire, cattle.pheno<span class="op">$</span>Dam) <span class="co"># numerator relationship matrix</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">G &lt;-<span class="st"> </span><span class="kw">computeG</span>(cattle.W) <span class="co"># genomic relationship matrix</span></a></code></pre></div>
+<pre><code>## Genomic relationship matrix has been computed. Number of SNPs removed: 99</code></pre>
 </div>
-<div id="example-of-connectedness-across-units." class="section level3">
-<h3>Example of connectedness across units.</h3>
-<div id="individual-average-cd" class="section level4">
-<h4>Individual average CD</h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Unit)) <span class="co"># design matrix of unit effect with intercept excluded</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">G &lt;-<span class="st"> </span><span class="kw">computeG</span>(cattle.W, <span class="dt">maf =</span> <span class="fl">0.05</span>, <span class="dt">type =</span> <span class="st">'G2'</span>) <span class="co"># genomic relationship matrix (VanRaden)</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">EVD &lt;-<span class="st"> </span><span class="kw">eigen</span>(G) <span class="co"># eigendecomposition </span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">var &lt;-<span class="st"> </span><span class="kw">varcomp</span>(<span class="dt">y =</span> cattle.pheno<span class="op">$</span>Phenotype, <span class="dt">Evector =</span> EVD<span class="op">$</span>vectors, <span class="dt">Evalue =</span> EVD<span class="op">$</span>values) <span class="co"># variance component</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">var<span class="op">$</span>Vu <span class="co"># variance of additive genetic effects</span></a></code></pre></div>
-<pre><code>## [1] 0.6496319</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">var<span class="op">$</span>Ve <span class="co"># variance of residual</span></a></code></pre></div>
-<pre><code>## [1] 0.4445644</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">CD_IdAve &lt;-<span class="st"> </span><span class="kw">gcm</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X, <span class="dt">sigma2a =</span> var<span class="op">$</span>Vu, <span class="dt">sigma2e =</span> var<span class="op">$</span>Ve, </a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CD_IdAve'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">CD_IdAve</a></code></pre></div>
-<pre><code>##           MU1       MU2       MU3       MU4       MU5
-## MU1        NA 0.6696807 0.6080204 0.6601902 0.6511560
-## MU2 0.6696807        NA 0.6411488 0.6906823 0.6851704
-## MU3 0.6080204 0.6411488        NA 0.6312249 0.6261347
-## MU4 0.6601902 0.6906823 0.6312249        NA 0.6763378
-## MU5 0.6511560 0.6851704 0.6261347 0.6763378        NA</code></pre>
-<p>The above example showed the individual average CD, which is a function of PEV and returned a pairwise connectedness between all units. Alternative, it can return an overall connectedness which averages all pairwise CD by setting ‘NumofMU’ to ‘Overall’ as</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">CD_IdAve &lt;-<span class="st"> </span><span class="kw">gcm</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X, <span class="dt">sigma2a =</span> var<span class="op">$</span>Vu, <span class="dt">sigma2e =</span> var<span class="op">$</span>Ve, </a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CD_IdAve'</span>, <span class="dt">NumofMU =</span> <span class="st">'Overall'</span>)</a>
+<div id="examples-of-connectedness-measures-across-units" class="section level3">
+<h3>Examples of connectedness measures across units</h3>
+<div id="pev-derived-metric-pevd_idave-pairwise-vs.overall" class="section level4">
+<h4>PEV-derived metric: PEVD_IdAve (pairwise vs. overall)</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">PEVD_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'PEVD_IdAve'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">PEVD_IdAve</a></code></pre></div>
+<pre><code>##            U1        U2        U3        U4        U5        U6        U7
+## U1         NA 0.5525346 0.5199088 0.5416924 0.5257257 0.5289870 0.5256614
+## U2  0.5525346        NA 0.5614026 0.5847986 0.5703275 0.5747776 0.5703435
+## U3  0.5199088 0.5614026        NA 0.5538906 0.5365304 0.5407639 0.5377443
+## U4  0.5416924 0.5847986 0.5538906        NA 0.5581035 0.5634845 0.5533572
+## U5  0.5257257 0.5703275 0.5365304 0.5581035        NA 0.5453589 0.5425332
+## U6  0.5289870 0.5747776 0.5407639 0.5634845 0.5453589        NA 0.5462782
+## U7  0.5256614 0.5703435 0.5377443 0.5533572 0.5425332 0.5462782        NA
+## U8  0.5307141 0.5759040 0.5429391 0.5633301 0.5481415 0.5530257 0.5473972
+## U9  0.5202445 0.5625710 0.5325291 0.5520092 0.5353547 0.5414308 0.5369920
+## U10 0.5173923 0.5613298 0.5293868 0.5490243 0.5348190 0.5377035 0.5344062
+##            U8        U9       U10
+## U1  0.5307141 0.5202445 0.5173923
+## U2  0.5759040 0.5625710 0.5613298
+## U3  0.5429391 0.5325291 0.5293868
+## U4  0.5633301 0.5520092 0.5490243
+## U5  0.5481415 0.5353547 0.5348190
+## U6  0.5530257 0.5414308 0.5377035
+## U7  0.5473972 0.5369920 0.5344062
+## U8         NA 0.5430894 0.5402111
+## U9  0.5430894        NA 0.5306260
+## U10 0.5402111 0.5306260        NA</code></pre>
+<p>The above example showed a pairwise connectedness between all units. Alternative, it can return an overall connectedness which averages all pairwise PEVD_IdAve by setting ‘NumofMU’ to ‘Overall’.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">PEVD_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'PEVD_IdAve'</span>, <span class="dt">NumofMU =</span> <span class="st">'Overall'</span>)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">PEVD_IdAve</a></code></pre></div>
+<pre><code>## [1] 0.5456617</code></pre>
+</div>
+<div id="pev-derived-metric-cd_idave" class="section level4">
+<h4>PEV-derived metric: CD_IdAve</h4>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">CD_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CD_IdAve'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
 <a class="sourceLine" id="cb12-3" data-line-number="3">CD_IdAve</a></code></pre></div>
-<pre><code>## [1] 0.6539746</code></pre>
+<pre><code>##            U1        U2        U3        U4        U5        U6        U7
+## U1         NA 0.7233316 0.7395968 0.7292795 0.7374993 0.7345964 0.7365558
+## U2  0.7233316        NA 0.7170794 0.7081351 0.7153164 0.7120290 0.7150467
+## U3  0.7395968 0.7170794        NA 0.7234796 0.7325007 0.7287141 0.7303066
+## U4  0.7292795 0.7081351 0.7234796        NA 0.7218707 0.7185224 0.7208105
+## U5  0.7374993 0.7153164 0.7325007 0.7218707        NA 0.7264824 0.7283800
+## U6  0.7345964 0.7120290 0.7287141 0.7185224 0.7264824        NA 0.7253614
+## U7  0.7365558 0.7150467 0.7303066 0.7208105 0.7283800 0.7253614        NA
+## U8  0.7343001 0.7119006 0.7282370 0.7180742 0.7265330 0.7228284 0.7256624
+## U9  0.7394350 0.7172048 0.7339108 0.7237091 0.7318303 0.7292097 0.7306245
+## U10 0.7409160 0.7187367 0.7349377 0.7249510 0.7322245 0.7297870 0.7318359
+##            U8        U9       U10
+## U1  0.7343001 0.7394350 0.7409160
+## U2  0.7119006 0.7172048 0.7187367
+## U3  0.7282370 0.7339108 0.7349377
+## U4  0.7180742 0.7237091 0.7249510
+## U5  0.7265330 0.7318303 0.7322245
+## U6  0.7228284 0.7292097 0.7297870
+## U7  0.7256624 0.7306245 0.7318359
+## U8         NA 0.7281301 0.7295225
+## U9  0.7281301        NA 0.7344177
+## U10 0.7295225 0.7344177        NA</code></pre>
 </div>
-<div id="coefficient-of-determination-of-ved-1" class="section level4">
-<h4>Coefficient of determination of VED</h4>
-<p>We showed the CDVED1 in the following example, which is a function of VE.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">CDVED1 &lt;-<span class="st"> </span><span class="kw">gcm</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X, <span class="dt">sigma2a =</span> var<span class="op">$</span>Vu, <span class="dt">sigma2e =</span> var<span class="op">$</span>Ve, </a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CDVED1'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">CDVED1</a></code></pre></div>
-<pre><code>##           MU1       MU2       MU3       MU4       MU5
-## MU1        NA 0.5821483 0.4925309 0.6316821 0.5744163
-## MU2 0.5821483        NA 0.4636864 0.7036332 0.6301990
-## MU3 0.4925309 0.4636864        NA 0.5363781 0.5087033
-## MU4 0.6316821 0.7036332 0.5363781        NA 0.6791546
-## MU5 0.5744163 0.6301990 0.5087033 0.6791546        NA</code></pre>
-<p>The above example only considered one fixed effect of unit in the model. When more than one fixed effect is included, we can account for these additional fixed effects using statistic ‘CDVED2’</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">X2 &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Unit)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">                        <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Sex))</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">CDVED2 &lt;-<span class="st"> </span><span class="kw">gcm</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Uidx =</span> <span class="dv">5</span>, <span class="dt">Xmatrix =</span> X2, <span class="dt">sigma2a =</span> var<span class="op">$</span>Vu, <span class="dt">sigma2e =</span> var<span class="op">$</span>Ve,</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">              <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CDVED2'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">CDVED2</a></code></pre></div>
-<pre><code>##           MU1       MU2       MU3       MU4       MU5
-## MU1        NA 0.5816912 0.4907677 0.6315747 0.5743693
-## MU2 0.5816912        NA 0.4624705 0.7035294 0.6288023
-## MU3 0.4907677 0.4624705        NA 0.5351207 0.5060286
-## MU4 0.6315747 0.7035294 0.5351207        NA 0.6787688
-## MU5 0.5743693 0.6288023 0.5060286 0.6787688        NA</code></pre>
-<p>Notice that, we added additional argument of ‘Uidx’ in the above example, which is a interger to indicate the last column of unit effects in X matrix. More details can be checked with <code>?gcm</code></p>
+<div id="pev-derived-metric-r_idave" class="section level4">
+<h4>PEV-derived metric: r_IdAve</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">r_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'r_IdAve'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">r_IdAve</a></code></pre></div>
+<pre><code>##               U1            U2            U3           U4            U5
+## U1            NA -0.0047141526 -0.0033817878 -0.004073569 -0.0036738041
+## U2  -0.004714153            NA -0.0005957718 -0.004208242 -0.0064931452
+## U3  -0.003381788 -0.0005957718            NA -0.006087185 -0.0031279837
+## U4  -0.004073569 -0.0042082423 -0.0060871851           NA -0.0033709753
+## U5  -0.003673804 -0.0064931452 -0.0031279837 -0.003370975            NA
+## U6  -0.003003594 -0.0079291529 -0.0042724363 -0.006582880 -0.0022796773
+## U7  -0.003172670 -0.0061593746 -0.0050404278  0.005736584 -0.0033493773
+## U8  -0.003027174 -0.0069203112 -0.0050997573 -0.003193864 -0.0042334579
+## U9  -0.003444291 -0.0022147710 -0.0056952518 -0.002046717 -0.0002807108
+## U10 -0.002743217 -0.0044764034 -0.0044788648 -0.001166681 -0.0040197044
+##               U6           U7           U8            U9          U10
+## U1  -0.003003594 -0.003172670 -0.003027174 -0.0034442908 -0.002743217
+## U2  -0.007929153 -0.006159375 -0.006920311 -0.0022147710 -0.004476403
+## U3  -0.004272436 -0.005040428 -0.005099757 -0.0056952518 -0.004478865
+## U4  -0.006582880  0.005736584 -0.003193864 -0.0020467173 -0.001166681
+## U5  -0.002279677 -0.003349377 -0.004233458 -0.0002807108 -0.004019704
+## U6            NA -0.003637634 -0.006619470 -0.0050279041 -0.002656429
+## U7  -0.003637634           NA -0.002564260 -0.0030444597 -0.002877255
+## U8  -0.006619470 -0.002564260           NA -0.0048292114 -0.004156556
+## U9  -0.005027904 -0.003044460 -0.004829211            NA -0.006250936
+## U10 -0.002656429 -0.002877255 -0.004156556 -0.0062509363           NA</code></pre>
+</div>
+<div id="ve-derived-metric-ved0" class="section level4">
+<h4>VE-derived metric: VED0</h4>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">VED0  &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'VED0'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">VED0 </a></code></pre></div>
+<pre><code>##             U1         U2         U3         U4         U5         U6
+## U1          NA 0.02120061 0.06516612 0.02155023 0.05088649 0.03069077
+## U2  0.02120061         NA 0.08307531 0.04014229 0.06733237 0.04889807
+## U3  0.06516612 0.08307531         NA 0.08098122 0.11192984 0.09322976
+## U4  0.02155023 0.04014229 0.08098122         NA 0.07003183 0.04844267
+## U5  0.05088649 0.06733237 0.11192984 0.07003183         NA 0.07756829
+## U6  0.03069077 0.04889807 0.09322976 0.04844267 0.07756829         NA
+## U7  0.03669513 0.05452563 0.10042291 0.05541917 0.08569237 0.06333782
+## U8  0.03461300 0.05247181 0.09723227 0.05364303 0.07680849 0.06175551
+## U9  0.03821397 0.05682493 0.10134106 0.05738609 0.08532976 0.06591212
+## U10 0.02547577 0.04497126 0.08573941 0.04470751 0.07174014 0.05085673
+##             U7         U8         U9        U10
+## U1  0.03669513 0.03461300 0.03821397 0.02547577
+## U2  0.05452563 0.05247181 0.05682493 0.04497126
+## U3  0.10042291 0.09723227 0.10134106 0.08573941
+## U4  0.05541917 0.05364303 0.05738609 0.04470751
+## U5  0.08569237 0.07680849 0.08532976 0.07174014
+## U6  0.06333782 0.06175551 0.06591212 0.05085673
+## U7          NA 0.06824358 0.07353944 0.05967592
+## U8  0.06824358         NA 0.06915433 0.05648054
+## U9  0.07353944 0.06915433         NA 0.06112622
+## U10 0.05967592 0.05648054 0.06112622         NA</code></pre>
+</div>
+<div id="ve-derived-metric-cdved1" class="section level4">
+<h4>VE-derived metric: CDVED1</h4>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">CDVED1 &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CDVED1'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">CDVED1</a></code></pre></div>
+<pre><code>##              U1        U2          U3        U4        U5        U6
+## U1           NA 0.8879196 0.001880307 0.8480852 0.4489533 0.7308125
+## U2  0.887919563        NA 0.622301025 0.8761166 0.7518518 0.8350409
+## U3  0.001880307 0.6223010          NA 0.5934488 0.2726827 0.4485584
+## U4  0.848085178 0.8761166 0.593448787        NA 0.6890168 0.8102569
+## U5  0.448953315 0.7518518 0.272682668 0.6890168        NA 0.5970914
+## U6  0.730812509 0.8350409 0.448558404 0.8102569 0.5970914        NA
+## U7  0.649838529 0.8131949 0.365411424 0.7442463 0.5340274 0.6969255
+## U8  0.693733486 0.8230750 0.418461974 0.7798370 0.6205882 0.7222105
+## U9  0.574494038 0.7794034 0.333291779 0.7389830 0.4899673 0.6779058
+## U10 0.609520584 0.8125267 0.303251150 0.7674216 0.5013146 0.7000151
+##            U7        U8        U9       U10
+## U1  0.6498385 0.6937335 0.5744940 0.6095206
+## U2  0.8131949 0.8230750 0.7794034 0.8125267
+## U3  0.3654114 0.4184620 0.3332918 0.3032512
+## U4  0.7442463 0.7798370 0.7389830 0.7674216
+## U5  0.5340274 0.6205882 0.4899673 0.5013146
+## U6  0.6969255 0.7222105 0.6779058 0.7000151
+## U7         NA 0.6741701 0.6001397 0.6241722
+## U8  0.6741701        NA 0.6471324 0.6689441
+## U9  0.6001397 0.6471324        NA 0.5895810
+## U10 0.6241722 0.6689441 0.5895810        NA</code></pre>
+</div>
+<div id="ve-derived-metric-cr2" class="section level4">
+<h4>VE-derived metric: CR2</h4>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">CR2 &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X2, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CR2'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>, <span class="dt">Uidx =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">CR2</a></code></pre></div>
+<pre><code>##             U1          U2           U3           U4          U5
+## U1          NA -0.26621769 -0.257328218 -0.321709134 -0.25452829
+## U2  -0.2662177          NA -0.046477470 -0.080978201 -0.01374836
+## U3  -0.2573282 -0.04647747           NA -0.006646236 -0.02791201
+## U4  -0.3217091 -0.08097820 -0.006646236           NA -0.07057315
+## U5  -0.2545283 -0.01374836 -0.027912014 -0.070573147          NA
+## U6  -0.2943188 -0.06112906 -0.055431617 -0.046955235 -0.03362061
+## U7  -0.2179316 -0.03645822 -0.061550320 -0.058059258 -0.05845748
+## U8  -0.2392093 -0.04099010 -0.049734803 -0.070603730  0.05131580
+## U9  -0.2147602 -0.05575941 -0.052263916 -0.067890308 -0.02791496
+## U10 -0.2999218 -0.10384004 -0.020655179 -0.093013298 -0.02207712
+##               U6          U7          U8          U9          U10
+## U1  -0.294318763 -0.21793161 -0.23920930 -0.21476020 -0.299921824
+## U2  -0.061129058 -0.03645822 -0.04099010 -0.05575941 -0.103840044
+## U3  -0.055431617 -0.06155032 -0.04973480 -0.05226392 -0.020655179
+## U4  -0.046955235 -0.05805926 -0.07060373 -0.06789031 -0.093013298
+## U5  -0.033620610 -0.05845748  0.05131580 -0.02791496 -0.022077124
+## U6            NA -0.02560555 -0.04038641 -0.04756691 -0.003844793
+## U7  -0.025605551          NA -0.03896432 -0.06646446 -0.061210973
+## U8  -0.040386408 -0.03896432          NA -0.02627948 -0.039187417
+## U9  -0.047566906 -0.06646446 -0.02627948          NA -0.058755893
+## U10 -0.003844793 -0.06121097 -0.03918742 -0.05875589           NA</code></pre>
 </div>
 </div>
 <div id="available-connectedness-metrics-in-gca-package." class="section level3">
 <h3>Available connectedness metrics in GCA package.</h3>
-<p>The following section lists all available metrics in GCA package, which can be called by setting the argument of ‘statistic’.</p>
+<p>The following section lists all available metrics in GCA package, which can be called by setting the argument of <code>statistic</code>.</p>
 <ul>
 <li>PEVD_IdAve : Individual average PEVD, the optional argument of ‘scale’ is available.</li>
 <li>PEVD_GrpAve : Groupd average PEVD, the optional arguments of ‘scale’ and ‘diag’ are available.</li>
@@ -453,23 +588,26 @@ N \left [
 <div id="references" class="section level2 unnumbered">
 <h2>References</h2>
 <div id="refs" class="references">
+<div id="ref-rcpp">
+<p>Eddelbuettel, Dirk, and Romain François. 2011. “Rcpp: Seamless R and C++ Integration.” <em>Journal of Statistical Software</em> 40 (8): 1–18. <a href="https://doi.org/10.18637/jss.v040.i08" class="uri">https://doi.org/10.18637/jss.v040.i08</a>.</p>
+</div>
 <div id="ref-Henderson1984">
 <p>Henderson, C R. 1984. <em>Applications of Linear Models in Animal Breeding</em>. Third edition, Edited by Schaeffer LR. Guelph: University of Guelph.</p>
 </div>
 <div id="ref-holmes2017">
-<p>Holmes, John B, Ken G Dodds, and Michael A Lee. 2017. “Estimation of Genetic Connectedness Diagnostics Based on Prediction Errors Without the Prediction Error Variance–Covariance Matrix.” <em>Genetics Selection Evolution</em> 49 (1). BioMed Central:29.</p>
+<p>Holmes, John B, Ken G Dodds, and Michael A Lee. 2017. “Estimation of Genetic Connectedness Diagnostics Based on Prediction Errors Without the Prediction Error Variance–Covariance Matrix.” <em>Genetics Selection Evolution</em> 49 (1). BioMed Central: 29.</p>
 </div>
 <div id="ref-kennedy1993considerations">
-<p>Kennedy, BW, and D Trus. 1993. “Considerations on Genetic Connectedness Between Management Units Under an Animal Model.” <em>Journal of Animal Science</em> 71 (9). Oxford University Press:2341–52.</p>
+<p>Kennedy, BW, and D Trus. 1993. “Considerations on Genetic Connectedness Between Management Units Under an Animal Model.” <em>Journal of Animal Science</em> 71 (9). Oxford University Press: 2341–52.</p>
 </div>
 <div id="ref-kuehn2008">
-<p>Kuehn, LA, DR Notter, GJ Nieuwhof, and RM Lewis. 2008. “Changes in Connectedness over Time in Alternative Sheep Sire Referencing Schemes.” <em>Journal of Animal Science</em> 86 (3). Oxford University Press:536–44.</p>
+<p>Kuehn, LA, DR Notter, GJ Nieuwhof, and RM Lewis. 2008. “Changes in Connectedness over Time in Alternative Sheep Sire Referencing Schemes.” <em>Journal of Animal Science</em> 86 (3). Oxford University Press: 536–44.</p>
 </div>
 <div id="ref-laloe1993">
-<p>Laloë, Denis. 1993. “Precision and Information in Linear Models of Genetic Evaluation.” <em>Genetics Selection Evolution</em> 25 (6). BioMed Central:557.</p>
+<p>Laloë, Denis. 1993. “Precision and Information in Linear Models of Genetic Evaluation.” <em>Genetics Selection Evolution</em> 25 (6). BioMed Central: 557.</p>
 </div>
 <div id="ref-laloe1996">
-<p>Laloë, Denis, Florence Phocas, and Francois Menissier. 1996. “Considerations on Measures of Precision and Connectedness in Mixed Linear Models of Genetic Evaluation.” <em>Genetics Selection Evolution</em> 28 (4). BioMed Central:359.</p>
+<p>Laloë, Denis, Florence Phocas, and Francois Menissier. 1996. “Considerations on Measures of Precision and Connectedness in Mixed Linear Models of Genetic Evaluation.” <em>Genetics Selection Evolution</em> 28 (4). BioMed Central: 359.</p>
 </div>
 <div id="ref-lewis1999">
 <p>Lewis, RM, RE Crump, G Simm, and R Thompson. 1999. “Assessing Connectedness in Across-Flock Genetic Evaluations.” <em>Proc. Brit. Soc. Anim. Sci</em> 121.</p>
@@ -478,7 +616,7 @@ N \left [
 <p>Mathur, PK, BP Sullivan, and JP Chesnais. 2002. “Measuring Connectedness: Concept and Application to a Large Industry Breeding Program.” In <em>Proc. 7th World Congr. Genet. Appl. To Livest. Prod</em>, 19:23.</p>
 </div>
 <div id="ref-yu2017">
-<p>Yu, Haipeng, Matthew L Spangler, Ronald M Lewis, and Gota Morota. 2017. “Genomic Relatedness Strengthens Genetic Connectedness Across Management Units.” <em>G3: Genes, Genomes, Genetics</em> 7 (10). G3: Genes, Genomes, Genetics:3543–56.</p>
+<p>Yu, Haipeng, Matthew L Spangler, Ronald M Lewis, and Gota Morota. 2017. “Genomic Relatedness Strengthens Genetic Connectedness Across Management Units.” <em>G3: Genes, Genomes, Genetics</em> 7 (10). G3: Genes, Genomes, Genetics: 3543–56.</p>
 </div>
 </div>
 </div>
