@@ -287,7 +287,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="pev-derived-metric-cd_grpave" class="section level4">
 <h4>PEV-derived metric: CD_GrpAve</h4>
-<p>A group average CD, a larger value indicates more connected, is computed in the following example. As the results showed, the most connected units are units 2 and 7 (CD_GrpAve = 0.8073), where units 1 and 6 (CD_GrpAve = 0.7615) are found to be least connected.</p>
+<p>A group average CD, is computed in the following example. We can see that the most connected units are units 2 and 7 (CD_GrpAve = 0.8073), while units 1 and 6 (CD_GrpAve = 0.7615) the least connectedness.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">CD_GrpAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">               <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CD_GrpAve'</span>, </a>
 <a class="sourceLine" id="cb15-3" data-line-number="3">               <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
@@ -304,7 +304,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="ve-derived-metric-ved0" class="section level4">
 <h4>VE-derived metric: VED0</h4>
-<p>The following example showed the VED0 statistic with a smaller value indicates most connected units. The most connected units are found between units 1 and 8 (VED0 = 0.0124), and units 4 and 6 (VED0 = 0.0445) showed least connected.</p>
+<p>The following example illustrates the VED0 statistic. Here, the smaller value indicates the greater connectedness. We can see that the most connected units are found between units 1 and 8 (VED0 = 0.0124). On the other hand, units 4 and 6 (VED0 = 0.0445) shows the least connectedness.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">VED0  &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
 <a class="sourceLine" id="cb17-2" data-line-number="2">             <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'VED0'</span>, </a>
 <a class="sourceLine" id="cb17-3" data-line-number="3">             <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
@@ -321,7 +321,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="ve-derived-metric-cdved1" class="section level4">
 <h4>VE-derived metric: CDVED1</h4>
-<p>A CDVED1 statistic which accounts for the number of observations in the unit is shown in the following example. The most connected units are found between units 2 and 7 (CDVED1 = 0.8073), where the least connected units are between units 1 and 6 (CDVED1 = 0.7615). The larger CDVED1 value is according to greater connectedness.</p>
+<p>A CDVED1 statistic which accounts for the number of observations in the unit is shown in the following example. The most connected units are found between units 2 and 7 (CDVED1 = 0.8073), whereas units 1 and 6 (CDVED1 = 0.7615) shows least connectedness. The larger CDVED1 value is according to greater connectedness.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">CDVED1 &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
 <a class="sourceLine" id="cb19-2" data-line-number="2">              <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CDVED1'</span>, </a>
 <a class="sourceLine" id="cb19-3" data-line-number="3">              <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
@@ -338,7 +338,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="ve-derived-metric-cdved2" class="section level4">
 <h4>VE-derived metric: CDVED2</h4>
-<p>This example showed the calculation of CDVED2, where both the unit effects and sex are accounted for using correction factors. The larger CDVED2 value indicates greater connectedness. The most connected units are found between units 2 and 7 (CDVED2 = 0.8072), where the least connected units are between units 1 and 6 (CDVED2 = 0.7615).</p>
+<p>This example shows the calculation of CDVED2, where both the unit effects and sex are accounted for using correction factors. The larger CDVED2 value indicates greater connectedness. The most connected units are found between units 2 and 7 (CDVED2 = 0.8072), while units 1 and 6 (CDVED2 = 0.7615) shows least connectedness.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">CDVED2  &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X2, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
 <a class="sourceLine" id="cb21-2" data-line-number="2">           <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CDVED2'</span>, </a>
 <a class="sourceLine" id="cb21-3" data-line-number="3">           <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>, <span class="dt">Uidx =</span> <span class="dv">8</span>)</a>
