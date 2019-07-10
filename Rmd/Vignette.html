@@ -20,7 +20,7 @@
 <style type="text/css">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -33,13 +33,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -122,14 +120,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><a href="#application-of-gca-package">Application of GCA package</a><ul>
 <li><a href="#install-gca-from-github">Install GCA from Github</a></li>
 <li><a href="#data-preparation">Data preparation</a></li>
-<li><a href="#examples-of-connectedness-measures-across-units">Examples of connectedness measures across units</a><ul>
 <li><a href="#available-connectedness-statistics-in-the-gca-package">Available connectedness statistics in the GCA package</a></li>
+<li><a href="#examples-of-connectedness-measures-across-units">Examples of connectedness measures across units</a><ul>
 <li><a href="#pev-derived-metric-pevd_idave-pairwise-vs.overall">PEV-derived metric: PEVD_IdAve (pairwise vs. overall)</a></li>
 <li><a href="#pev-derived-metric-cd_idave">PEV-derived metric: CD_IdAve</a></li>
-<li><a href="#pev-derived-metric-r_idave">PEV-derived metric: r_IdAve</a></li>
+<li><a href="#pev-derived-metric-cd_grpave">PEV-derived metric: CD_GrpAve</a></li>
 <li><a href="#ve-derived-metric-ved0">VE-derived metric: VED0</a></li>
 <li><a href="#ve-derived-metric-cdved1">VE-derived metric: CDVED1</a></li>
-<li><a href="#ve-derived-metric-cr2">VE-derived metric: CR2</a></li>
+<li><a href="#ve-derived-metric-cdved2">VE-derived metric: CDVED2</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#authors">Authors</a></li>
@@ -142,11 +140,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
     <section id="main-content">
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>Genetic connectedness quantify the extent of linkage between individuals across management units. The concept of genetic connectedness can be extended to measure the connectedness level between training and testing sets in whole-genome prediction. However, there is no user-friendly software tool available to compute a comprehensive list of connectedness statistics. Therefore we developed the genetic connectedness analysis R package, GCA, which utilizes pedigree and genomic data to measure the connectedness between individuals across units. The connectedness statistics implemented in this R package can be classified into two core functions: prediction error variance (PEV) and variance of unit effect estimates (VE). The PEV-derived metrics include prediction error variance of differences (PEVD), coefficient of determination (CD), and prediction error correlation (r). These PEV-derived metrics can be summarized at the unit level as the average PEV of all pairwise differences between individuals across units, average PEV within and across units, or using a contrast vector. VE-derived metrics include variance of differences in management unit effects (VED), coefficient of determination of VED (CDVED), and connectedness rating (CR). Three correction factors accounting for the number of fixed effects can be applied for each VE-derived metric. These include no correction (0), correcting for one fixed effect (1), and correcting for two or more fixed effects (2). The R code is integrated with C++ to improve computational speed using the Rcpp package <span class="citation">(Eddelbuettel and François 2011)</span>. We expect this R package will provide a comprehensive and effective tool for genetic connectedness analysis and whole-genome prediction.</p>
+<p>Genetic connectedness quantify the extent of linkage between individuals across management units. The concept of genetic connectedness can be extended to measure the connectedness level between training and testing sets in whole-genome prediction. However, there is no user-friendly software tool available to compute a comprehensive list of connectedness statistics. Therefore we developed the genetic connectedness analysis R package, GCA, which utilizes pedigree and genomic data to measure the connectedness between individuals across units.</p>
 </div>
 <div id="connectedness-statistics" class="section level2">
 <h2>Connectedness Statistics</h2>
-<p>The connectedness statistics included in this package can be classified into two groups based on the core functions including Prediction error variance (PEV) and Variance of unit effect estimates (VE). Within each core function, various metrics are used to quantify the level of connectedness. Furthermore, different summary methods and correction factors are applied for these connectedness metrics to derive the connectedness statistics. A comprehensive list of all connectedness statistics implemented in this R package can be summarized as following. The details of these connectedness statistics can be found in the <a href="https://www.biorxiv.org/content/10.1101/696419v1">paper</a>.</p>
+<p>The connectedness statistics implemented in this R package can be classified into two core functions: prediction error variance (PEV) and variance of unit effect estimates (VE). The PEV-derived metrics include prediction error variance of differences (PEVD), coefficient of determination (CD), and prediction error correlation (r). These PEV-derived metrics can be summarized at the unit level as the average PEV of all pairwise differences between individuals across units, average PEV within and across units, or using a contrast vector. VE-derived metrics include variance of differences in management unit effects (VED), coefficient of determination of VED (CDVED), and connectedness rating (CR). Three correction factors accounting for the number of fixed effects can be applied for each VE-derived metric. These include no correction (0), correcting for one fixed effect (1), and correcting for two or more fixed effects (2). The R code is integrated with C++ to improve computational speed using the Rcpp package <span class="citation">(Eddelbuettel and François 2011)</span>. We expect this R package will provide a comprehensive and effective tool for genetic connectedness analysis and whole-genome prediction. A comprehensive list of all connectedness statistics implemented in this R package can be summarized as following. The details of these connectedness statistics can be found in the <a href="https://www.biorxiv.org/content/10.1101/696419v2">paper</a>.</p>
 <ul>
 <li>Prediction error variance (PEV)
 <ul>
@@ -203,25 +201,24 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="data-preparation" class="section level3">
 <h3>Data preparation</h3>
-<p>The cattle dataset of <code>GCcattle</code> contains two files of <code>cattle.pheno</code> and <code>cattle.W</code>, which include phenotype and marker information, respectively. The details can be checked with <code>?GCcattle</code>. In addition, some matrices and parameters are set up here for the following examples.</p>
+<p>The cattle dataset of contains two files of <code>cattle.pheno</code> and <code>cattle.W</code>, which include The dataset <code>GCcattle</code> contains two objects <code>cattle.pheno</code> and <code>cattle.W</code>, which include phenotypic and marker information, respectively. The details can be obtained by typing <code>?GCcattle</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(GCA)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">data</span>(GCcattle)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">dim</span>(cattle.pheno) <span class="co"># phenotypes + fixed effects</span></a></code></pre></div>
 <pre><code>## [1] 2500    6</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">dim</span>(cattle.W) <span class="co"># marker matrix</span></a></code></pre></div>
 <pre><code>## [1]  2500 10000</code></pre>
+<p>The heritability of simulated phenotype was set to 0.6 with <span class="math inline">\(\sigma^2_a\)</span> = 0.6 and <span class="math inline">\(\sigma^2_e\)</span> = 0.4.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">sigma2a &lt;-<span class="st"> </span><span class="fl">0.6</span> <span class="co"># additive genetic variance</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">sigma2e &lt;-<span class="st"> </span><span class="fl">0.4</span> <span class="co"># residual variance</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">X1 &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Unit)) <span class="co"># design matrix of unit effect with intercept excluded</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">X2 &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Unit) <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Sex)) <span class="co"># design matrix of unit effect and sex</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">A &lt;-<span class="st"> </span><span class="kw">computeA</span>(cattle.pheno<span class="op">$</span>Progeny, cattle.pheno<span class="op">$</span>Sire, cattle.pheno<span class="op">$</span>Dam) <span class="co"># numerator relationship matrix</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">G &lt;-<span class="st"> </span><span class="kw">computeG</span>(cattle.W) <span class="co"># genomic relationship matrix</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2">sigma2e &lt;-<span class="st"> </span><span class="fl">0.4</span> <span class="co"># residual variance</span></a></code></pre></div>
+<p>Below we construct two incidence matrices and a genomic relationship matrix. The X1 and X2 contain one and two fixed effects, respectively.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">X1 &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Unit)) <span class="co"># incidence matrix of unit effect with intercept excluded</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">X2 &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Unit) <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(cattle.pheno<span class="op">$</span>Sex)) <span class="co"># incidence matrix of unit effect and sex</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">G &lt;-<span class="st"> </span><span class="kw">computeG</span>(cattle.W) <span class="co"># genomic relationship matrix</span></a></code></pre></div>
 <pre><code>## Genomic relationship matrix has been computed. Number of SNPs removed: 99</code></pre>
 </div>
-<div id="examples-of-connectedness-measures-across-units" class="section level3">
-<h3>Examples of connectedness measures across units</h3>
-<div id="available-connectedness-statistics-in-the-gca-package" class="section level4">
-<h4>Available connectedness statistics in the GCA package</h4>
+<div id="available-connectedness-statistics-in-the-gca-package" class="section level3">
+<h3>Available connectedness statistics in the GCA package</h3>
 <p>The following section lists all available connectedness statistics in the GCA package, which are available by setting the argument of <code>statistic</code>.</p>
 <ul>
 <li>PEVD_IdAve : Individual average PEVD, the optional argument of ‘scale’ is available.</li>
@@ -244,138 +241,117 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li>CR2 : Connectedness rating with the correction of unit effect and additional fixed effects. The additional argument of ‘Uidx’ is required.</li>
 </ul>
 </div>
+<div id="examples-of-connectedness-measures-across-units" class="section level3">
+<h3>Examples of connectedness measures across units</h3>
+<p>Below we list some examples of connectedness statistics in the GCA package.</p>
 <div id="pev-derived-metric-pevd_idave-pairwise-vs.overall" class="section level4">
 <h4>PEV-derived metric: PEVD_IdAve (pairwise vs. overall)</h4>
-<p>The following example showed the pairwise individual average PEVD between all units. Based on the results, Units 1 and 10 are most connected with PEVD_IdAve equals to 0.517, and the less connected units are 2 and 4 having a PEVD_IdAve of 0.585. The PEVD metric ranged from 0 to 1, with the smaller value indicates units are more connected.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">PEVD_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">                  <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'PEVD_IdAve'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">round</span>(PEVD_IdAve, <span class="dt">digits =</span> <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>##        U1    U2    U3    U4    U5    U6    U7    U8    U9   U10
-## U1     NA 0.553 0.520 0.542 0.526 0.529 0.526 0.531 0.520 0.517
-## U2  0.553    NA 0.561 0.585 0.570 0.575 0.570 0.576 0.563 0.561
-## U3  0.520 0.561    NA 0.554 0.537 0.541 0.538 0.543 0.533 0.529
-## U4  0.542 0.585 0.554    NA 0.558 0.563 0.553 0.563 0.552 0.549
-## U5  0.526 0.570 0.537 0.558    NA 0.545 0.543 0.548 0.535 0.535
-## U6  0.529 0.575 0.541 0.563 0.545    NA 0.546 0.553 0.541 0.538
-## U7  0.526 0.570 0.538 0.553 0.543 0.546    NA 0.547 0.537 0.534
-## U8  0.531 0.576 0.543 0.563 0.548 0.553 0.547    NA 0.543 0.540
-## U9  0.520 0.563 0.533 0.552 0.535 0.541 0.537 0.543    NA 0.531
-## U10 0.517 0.561 0.529 0.549 0.535 0.538 0.534 0.540 0.531    NA</code></pre>
-<p>Alternatively, it can return an overall connectedness which averages all pairwise PEVD_IdAve between units by setting <code>NumofMU</code> to <code>'Overall'</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">PEVD_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">                  <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'PEVD_IdAve'</span>, <span class="dt">NumofMU =</span> <span class="st">'Overall'</span>)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">PEVD_IdAve</a></code></pre></div>
-<pre><code>## [1] 0.5456617</code></pre>
-<p>Following the above examples, the group average PEVD and contrast PEVD can be easily calculated by changing the argument <code>statistic</code> to the corresponding connectedness statistic.</p>
+<p>The <code>gca</code> function is the main engine in the GCA package. The following example illustrates the pairwise individual average PEVD between all units. Based on the results, units 1 and 8 are the most connected (PEVD_IdAve = 0.2818) and the least connected units are units 4 and 6 (PEVD_IdAve = 0.3083). The PEVD statistic ranges from 0 to 1, with the smaller value indicates more connectedness.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">PEVD_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">                  <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'PEVD_IdAve'</span>, </a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">                  <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw">round</span>(PEVD_IdAve, <span class="dt">digits =</span> <span class="dv">4</span>)</a></code></pre></div>
+<pre><code>##        U1     U2     U3     U4     U5     U6     U7     U8
+## U1     NA 0.5198 0.5258 0.5288 0.5249 0.5299 0.5201 0.5178
+## U2 0.5198     NA 0.5368 0.5410 0.5372 0.5425 0.5330 0.5303
+## U3 0.5258 0.5368     NA 0.5456 0.5416 0.5476 0.5360 0.5358
+## U4 0.5288 0.5410 0.5456     NA 0.5453 0.5525 0.5414 0.5386
+## U5 0.5249 0.5372 0.5416 0.5453     NA 0.5460 0.5355 0.5347
+## U6 0.5299 0.5425 0.5476 0.5525 0.5460     NA 0.5425 0.5405
+## U7 0.5201 0.5330 0.5360 0.5414 0.5355 0.5425     NA 0.5315
+## U8 0.5178 0.5303 0.5358 0.5386 0.5347 0.5405 0.5315     NA</code></pre>
+<p>Alternatively, the <code>gca</code> function can return an overall connectedness, which averages all pairwise PEVD_IdAve between units by setting <code>NumofMU</code> to <code>'Overall'</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">PEVD_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">                  <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'PEVD_IdAve'</span>, </a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">                  <span class="dt">NumofMU =</span> <span class="st">'Overall'</span>)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">PEVD_IdAve</a></code></pre></div>
+<pre><code>## [1] 0.5358172</code></pre>
+<p>Following the above example, the group average PEVD and contrast PEVD can be easily calculated by changing the argument <code>statistic</code> to PEVD_GrpAve and PEVD_contrast, respectively.</p>
 </div>
 <div id="pev-derived-metric-cd_idave" class="section level4">
 <h4>PEV-derived metric: CD_IdAve</h4>
-<p>The pairwise individual average CD between units are showed in the following example. The CD_IdAve between units 1 and 10 is 0.741 which is most connectedness. Whereas, the less connected design is found between unit 2 and 4. The CD metric quantifies the connectedness with a larger value refer to more connected.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">CD_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CD_IdAve'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw">round</span>(CD_IdAve, <span class="dt">digits =</span> <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>##        U1    U2    U3    U4    U5    U6    U7    U8    U9   U10
-## U1     NA 0.723 0.740 0.729 0.737 0.735 0.737 0.734 0.739 0.741
-## U2  0.723    NA 0.717 0.708 0.715 0.712 0.715 0.712 0.717 0.719
-## U3  0.740 0.717    NA 0.723 0.733 0.729 0.730 0.728 0.734 0.735
-## U4  0.729 0.708 0.723    NA 0.722 0.719 0.721 0.718 0.724 0.725
-## U5  0.737 0.715 0.733 0.722    NA 0.726 0.728 0.727 0.732 0.732
-## U6  0.735 0.712 0.729 0.719 0.726    NA 0.725 0.723 0.729 0.730
-## U7  0.737 0.715 0.730 0.721 0.728 0.725    NA 0.726 0.731 0.732
-## U8  0.734 0.712 0.728 0.718 0.727 0.723 0.726    NA 0.728 0.730
-## U9  0.739 0.717 0.734 0.724 0.732 0.729 0.731 0.728    NA 0.734
-## U10 0.741 0.719 0.735 0.725 0.732 0.730 0.732 0.730 0.734    NA</code></pre>
+<p>The pairwise individual average CD statistic between units is shown in the following example. The most connected units was found between units 1 and 8 (CD_IdAve = 0.8590). On the other hand, the least connected design was found between units 4 and 6 (CD_IdAve = 0.8455). The larger CD statistics indicates the greater connectedness.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">CD_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">                <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CD_IdAve'</span>, </a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">                <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw">round</span>(CD_IdAve, <span class="dt">digits =</span> <span class="dv">4</span>)</a></code></pre></div>
+<pre><code>##        U1     U2     U3     U4     U5     U6     U7     U8
+## U1     NA 0.7397 0.7375 0.7347 0.7370 0.7347 0.7394 0.7408
+## U2 0.7397     NA 0.7324 0.7287 0.7308 0.7285 0.7336 0.7347
+## U3 0.7375 0.7324     NA 0.7264 0.7290 0.7268 0.7316 0.7320
+## U4 0.7347 0.7287 0.7264     NA 0.7261 0.7230 0.7291 0.7296
+## U5 0.7370 0.7308 0.7290 0.7261     NA 0.7263 0.7313 0.7321
+## U6 0.7347 0.7285 0.7268 0.7230 0.7263     NA 0.7282 0.7295
+## U7 0.7394 0.7336 0.7316 0.7291 0.7313 0.7282     NA 0.7340
+## U8 0.7408 0.7347 0.7320 0.7296 0.7321 0.7295 0.7340     NA</code></pre>
 </div>
-<div id="pev-derived-metric-r_idave" class="section level4">
-<h4>PEV-derived metric: r_IdAve</h4>
-<p>In the same manner, the pairwise individual average r between units are calculated in the following example.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">r_IdAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">               <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'r_IdAve'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw">round</span>(r_IdAve, <span class="dt">digits =</span> <span class="dv">4</span>)</a></code></pre></div>
-<pre><code>##          U1      U2      U3      U4      U5      U6      U7      U8
-## U1       NA -0.0047 -0.0034 -0.0041 -0.0037 -0.0030 -0.0032 -0.0030
-## U2  -0.0047      NA -0.0006 -0.0042 -0.0065 -0.0079 -0.0062 -0.0069
-## U3  -0.0034 -0.0006      NA -0.0061 -0.0031 -0.0043 -0.0050 -0.0051
-## U4  -0.0041 -0.0042 -0.0061      NA -0.0034 -0.0066  0.0057 -0.0032
-## U5  -0.0037 -0.0065 -0.0031 -0.0034      NA -0.0023 -0.0033 -0.0042
-## U6  -0.0030 -0.0079 -0.0043 -0.0066 -0.0023      NA -0.0036 -0.0066
-## U7  -0.0032 -0.0062 -0.0050  0.0057 -0.0033 -0.0036      NA -0.0026
-## U8  -0.0030 -0.0069 -0.0051 -0.0032 -0.0042 -0.0066 -0.0026      NA
-## U9  -0.0034 -0.0022 -0.0057 -0.0020 -0.0003 -0.0050 -0.0030 -0.0048
-## U10 -0.0027 -0.0045 -0.0045 -0.0012 -0.0040 -0.0027 -0.0029 -0.0042
-##          U9     U10
-## U1  -0.0034 -0.0027
-## U2  -0.0022 -0.0045
-## U3  -0.0057 -0.0045
-## U4  -0.0020 -0.0012
-## U5  -0.0003 -0.0040
-## U6  -0.0050 -0.0027
-## U7  -0.0030 -0.0029
-## U8  -0.0048 -0.0042
-## U9       NA -0.0063
-## U10 -0.0063      NA</code></pre>
+<div id="pev-derived-metric-cd_grpave" class="section level4">
+<h4>PEV-derived metric: CD_GrpAve</h4>
+<p>A group average CD, a larger value indicates more connected, is computed in the following example. As the results showed, the most connected units are units 2 and 7 (CD_GrpAve = 0.8073), where units 1 and 6 (CD_GrpAve = 0.7615) are found to be least connected.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">CD_GrpAve &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">               <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CD_GrpAve'</span>, </a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">               <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="kw">round</span>(CD_GrpAve, <span class="dt">digits =</span> <span class="dv">4</span>)</a></code></pre></div>
+<pre><code>##        U1     U2     U3     U4     U5     U6     U7     U8
+## U1     NA 0.6850 0.6679 0.6788 0.6747 0.6494 0.7097 0.6747
+## U2 0.6850     NA 0.6938 0.6839 0.6774 0.6642 0.7090 0.6830
+## U3 0.6679 0.6938     NA 0.6729 0.6738 0.6640 0.6953 0.6583
+## U4 0.6788 0.6839 0.6729     NA 0.6795 0.6595 0.7052 0.6751
+## U5 0.6747 0.6774 0.6738 0.6795     NA 0.6663 0.7020 0.6748
+## U6 0.6494 0.6642 0.6640 0.6595 0.6663     NA 0.6774 0.6556
+## U7 0.7097 0.7090 0.6953 0.7052 0.7020 0.6774     NA 0.6902
+## U8 0.6747 0.6830 0.6583 0.6751 0.6748 0.6556 0.6902     NA</code></pre>
 </div>
 <div id="ve-derived-metric-ved0" class="section level4">
 <h4>VE-derived metric: VED0</h4>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">VED0  &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">             <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'VED0'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw">round</span>(VED0, <span class="dt">digits =</span> <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>##        U1    U2    U3    U4    U5    U6    U7    U8    U9   U10
-## U1     NA 0.021 0.065 0.022 0.051 0.031 0.037 0.035 0.038 0.025
-## U2  0.021    NA 0.083 0.040 0.067 0.049 0.055 0.052 0.057 0.045
-## U3  0.065 0.083    NA 0.081 0.112 0.093 0.100 0.097 0.101 0.086
-## U4  0.022 0.040 0.081    NA 0.070 0.048 0.055 0.054 0.057 0.045
-## U5  0.051 0.067 0.112 0.070    NA 0.078 0.086 0.077 0.085 0.072
-## U6  0.031 0.049 0.093 0.048 0.078    NA 0.063 0.062 0.066 0.051
-## U7  0.037 0.055 0.100 0.055 0.086 0.063    NA 0.068 0.074 0.060
-## U8  0.035 0.052 0.097 0.054 0.077 0.062 0.068    NA 0.069 0.056
-## U9  0.038 0.057 0.101 0.057 0.085 0.066 0.074 0.069    NA 0.061
-## U10 0.025 0.045 0.086 0.045 0.072 0.051 0.060 0.056 0.061    NA</code></pre>
+<p>The following example showed the VED0 statistic with a smaller value indicates most connected units. The most connected units are found between units 1 and 8 (VED0 = 0.0124), and units 4 and 6 (VED0 = 0.0445) showed least connected.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">VED0  &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">             <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'VED0'</span>, </a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">             <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw">round</span>(VED0, <span class="dt">digits =</span> <span class="dv">4</span>)</a></code></pre></div>
+<pre><code>##        U1     U2     U3     U4     U5     U6     U7     U8
+## U1     NA 0.0213 0.0296 0.0367 0.0322 0.0373 0.0246 0.0205
+## U2 0.0213     NA 0.0470 0.0553 0.0509 0.0563 0.0438 0.0394
+## U3 0.0296 0.0470     NA 0.0623 0.0575 0.0638 0.0491 0.0472
+## U4 0.0367 0.0553 0.0623     NA 0.0653 0.0728 0.0587 0.0541
+## U5 0.0322 0.0509 0.0575 0.0653     NA 0.0656 0.0521 0.0495
+## U6 0.0373 0.0563 0.0638 0.0728 0.0656     NA 0.0593 0.0555
+## U7 0.0246 0.0438 0.0491 0.0587 0.0521 0.0593     NA 0.0435
+## U8 0.0205 0.0394 0.0472 0.0541 0.0495 0.0555 0.0435     NA</code></pre>
 </div>
 <div id="ve-derived-metric-cdved1" class="section level4">
 <h4>VE-derived metric: CDVED1</h4>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">CDVED1 &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">              <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CDVED1'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="kw">round</span>(CDVED1, <span class="dt">digits =</span> <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>##        U1    U2    U3    U4    U5    U6    U7    U8    U9   U10
-## U1     NA 0.888 0.002 0.848 0.449 0.731 0.650 0.694 0.574 0.610
-## U2  0.888    NA 0.622 0.876 0.752 0.835 0.813 0.823 0.779 0.813
-## U3  0.002 0.622    NA 0.593 0.273 0.449 0.365 0.418 0.333 0.303
-## U4  0.848 0.876 0.593    NA 0.689 0.810 0.744 0.780 0.739 0.767
-## U5  0.449 0.752 0.273 0.689    NA 0.597 0.534 0.621 0.490 0.501
-## U6  0.731 0.835 0.449 0.810 0.597    NA 0.697 0.722 0.678 0.700
-## U7  0.650 0.813 0.365 0.744 0.534 0.697    NA 0.674 0.600 0.624
-## U8  0.694 0.823 0.418 0.780 0.621 0.722 0.674    NA 0.647 0.669
-## U9  0.574 0.779 0.333 0.739 0.490 0.678 0.600 0.647    NA 0.590
-## U10 0.610 0.813 0.303 0.767 0.501 0.700 0.624 0.669 0.590    NA</code></pre>
+<p>A CDVED1 statistic which accounts for the number of observations in the unit is shown in the following example. The most connected units are found between units 2 and 7 (CDVED1 = 0.8073), where the least connected units are between units 1 and 6 (CDVED1 = 0.7615). The larger CDVED1 value is according to greater connectedness.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">CDVED1 &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X1, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">              <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CDVED1'</span>, </a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">              <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>)</a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="kw">round</span>(CDVED1, <span class="dt">digits =</span> <span class="dv">4</span>)</a></code></pre></div>
+<pre><code>##        U1     U2     U3     U4     U5     U6     U7     U8
+## U1     NA 0.6850 0.6679 0.6788 0.6747 0.6494 0.7097 0.6747
+## U2 0.6850     NA 0.6938 0.6839 0.6774 0.6642 0.7090 0.6830
+## U3 0.6679 0.6938     NA 0.6729 0.6738 0.6640 0.6953 0.6583
+## U4 0.6788 0.6839 0.6729     NA 0.6795 0.6595 0.7052 0.6751
+## U5 0.6747 0.6774 0.6738 0.6795     NA 0.6663 0.7020 0.6748
+## U6 0.6494 0.6642 0.6640 0.6595 0.6663     NA 0.6774 0.6556
+## U7 0.7097 0.7090 0.6953 0.7052 0.7020 0.6774     NA 0.6902
+## U8 0.6747 0.6830 0.6583 0.6751 0.6748 0.6556 0.6902     NA</code></pre>
 </div>
-<div id="ve-derived-metric-cr2" class="section level4">
-<h4>VE-derived metric: CR2</h4>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">CR2 &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X2, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">           <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CR2'</span>, <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>, <span class="dt">Uidx =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="kw">round</span>(CR2, <span class="dt">digits =</span> <span class="dv">4</span>)</a></code></pre></div>
-<pre><code>##          U1      U2      U3      U4      U5      U6      U7      U8
-## U1       NA -0.2662 -0.2573 -0.3217 -0.2545 -0.2943 -0.2179 -0.2392
-## U2  -0.2662      NA -0.0465 -0.0810 -0.0137 -0.0611 -0.0365 -0.0410
-## U3  -0.2573 -0.0465      NA -0.0066 -0.0279 -0.0554 -0.0616 -0.0497
-## U4  -0.3217 -0.0810 -0.0066      NA -0.0706 -0.0470 -0.0581 -0.0706
-## U5  -0.2545 -0.0137 -0.0279 -0.0706      NA -0.0336 -0.0585  0.0513
-## U6  -0.2943 -0.0611 -0.0554 -0.0470 -0.0336      NA -0.0256 -0.0404
-## U7  -0.2179 -0.0365 -0.0616 -0.0581 -0.0585 -0.0256      NA -0.0390
-## U8  -0.2392 -0.0410 -0.0497 -0.0706  0.0513 -0.0404 -0.0390      NA
-## U9  -0.2148 -0.0558 -0.0523 -0.0679 -0.0279 -0.0476 -0.0665 -0.0263
-## U10 -0.2999 -0.1038 -0.0207 -0.0930 -0.0221 -0.0038 -0.0612 -0.0392
-##          U9     U10
-## U1  -0.2148 -0.2999
-## U2  -0.0558 -0.1038
-## U3  -0.0523 -0.0207
-## U4  -0.0679 -0.0930
-## U5  -0.0279 -0.0221
-## U6  -0.0476 -0.0038
-## U7  -0.0665 -0.0612
-## U8  -0.0263 -0.0392
-## U9       NA -0.0588
-## U10 -0.0588      NA</code></pre>
+<div id="ve-derived-metric-cdved2" class="section level4">
+<h4>VE-derived metric: CDVED2</h4>
+<p>This example showed the calculation of CDVED2, where both the unit effects and sex are accounted for using correction factors. The larger CDVED2 value indicates greater connectedness. The most connected units are found between units 2 and 7 (CDVED2 = 0.8072), where the least connected units are between units 1 and 6 (CDVED2 = 0.7615).</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">CDVED2  &lt;-<span class="st"> </span><span class="kw">gca</span>(<span class="dt">Kmatrix =</span> G, <span class="dt">Xmatrix =</span> X2, <span class="dt">sigma2a =</span> sigma2a, <span class="dt">sigma2e =</span> sigma2e, </a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">           <span class="dt">MUScenario =</span> <span class="kw">as.factor</span>(cattle.pheno<span class="op">$</span>Unit), <span class="dt">statistic =</span> <span class="st">'CDVED2'</span>, </a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">           <span class="dt">NumofMU =</span> <span class="st">'Pairwise'</span>, <span class="dt">Uidx =</span> <span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="kw">round</span>(CDVED2, <span class="dt">digits =</span> <span class="dv">4</span>)</a></code></pre></div>
+<pre><code>##        U1     U2     U3     U4     U5     U6     U7     U8
+## U1     NA 0.6849 0.6675 0.6788 0.6747 0.6494 0.7096 0.6747
+## U2 0.6849     NA 0.6934 0.6838 0.6774 0.6642 0.7088 0.6829
+## U3 0.6675 0.6934     NA 0.6728 0.6736 0.6639 0.6953 0.6582
+## U4 0.6788 0.6838 0.6728     NA 0.6795 0.6595 0.7052 0.6751
+## U5 0.6747 0.6774 0.6736 0.6795     NA 0.6663 0.7020 0.6748
+## U6 0.6494 0.6642 0.6639 0.6595 0.6663     NA 0.6773 0.6556
+## U7 0.7096 0.7088 0.6953 0.7052 0.7020 0.6773     NA 0.6901
+## U8 0.6747 0.6829 0.6582 0.6751 0.6748 0.6556 0.6901     NA</code></pre>
 </div>
 </div>
 </div>
@@ -390,7 +366,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>References</h2>
 <div id="refs" class="references">
 <div id="ref-rcpp">
-<p>Eddelbuettel, Dirk, and Romain François. 2011. “Rcpp: Seamless R and C++ Integration.” <em>Journal of Statistical Software</em> 40 (8):1–18. <a href="https://doi.org/10.18637/jss.v040.i08" class="uri">https://doi.org/10.18637/jss.v040.i08</a>.</p>
+<p>Eddelbuettel, Dirk, and Romain François. 2011. “Rcpp: Seamless R and C++ Integration.” <em>Journal of Statistical Software</em> 40 (8): 1–18. <a href="https://doi.org/10.18637/jss.v040.i08" class="uri">https://doi.org/10.18637/jss.v040.i08</a>.</p>
 </div>
 </div>
 </div>
