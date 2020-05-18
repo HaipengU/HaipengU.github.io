@@ -40,6 +40,17 @@
     </item>
     
     <item>
+      <title>Preprints</title>
+      <link>https://HaipengU.github.io/home/preprints/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/home/preprints/</guid>
+      <description> Malachy T. Campbell, Haipeng Yu, Mehdi Momen, and Gota Morota. Examining the relationships between phenotypic plasticity and local environments with genomic structural equation models. bioRxiv. [bioRxiv]
+ Haipeng Yu and Gota Morota. GCA: An R package for genetic connectedness analysis using pedigree and genomic data. bioRxiv. [bioRxiv]
+  </description>
+    </item>
+    
+    <item>
       <title>Publications</title>
       <link>https://HaipengU.github.io/home/publications/</link>
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
