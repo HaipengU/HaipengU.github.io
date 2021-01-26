@@ -13,9 +13,18 @@
     
     
     <item>
+      <title>GCA: An R package for genetic connectedness analysis using pedigree and genomic data</title>
+      <link>https://HaipengU.github.io/publication/gc3/</link>
+      <pubDate>Tue, 26 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/publication/gc3/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Forecasting dynamic body weight of non-restrained pigs from images using an RGB-D sensor camera</title>
       <link>https://HaipengU.github.io/publication/cvspig1/</link>
-      <pubDate>Mon, 11 Jan 2021 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 17 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>https://HaipengU.github.io/publication/cvspig1/</guid>
       <description></description>
@@ -31,7 +40,7 @@
     </item>
     
     <item>
-      <title>Modeling multiple phenotypes in wheatusing  data-driven  genomic  exploratory  factor  analysis  and  Bayesian  network  learning</title>
+      <title>Modeling multiple phenotypes in wheat using data-driven genomic exploratory factor analysis and Bayesian network learning</title>
       <link>https://HaipengU.github.io/publication/wheatecfa/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
       
