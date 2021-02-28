@@ -6,7 +6,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Haipeng Yu</copyright>
-    <lastBuildDate>Tue, 26 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 27 Feb 2021 00:00:00 +0000</lastBuildDate>
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
@@ -15,6 +15,15 @@
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>https://HaipengU.github.io/blog/2018/11/posts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Structural equation modelling for unravelling the multivariate genomic architecture of milk proteins in dairy cattle</title>
+      <link>https://HaipengU.github.io/publication/semgwascattle/</link>
+      <pubDate>Sat, 27 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/publication/semgwascattle/</guid>
       <description></description>
     </item>
     
@@ -33,15 +42,6 @@
       <pubDate>Sun, 17 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>https://HaipengU.github.io/publication/cvspig1/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Structural equation modelling for unravelling the multivariate genomic architecture of milk proteins in dairy cattle</title>
-      <link>https://HaipengU.github.io/publication/semgwascattle/</link>
-      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://HaipengU.github.io/publication/semgwascattle/</guid>
       <description></description>
     </item>
     
