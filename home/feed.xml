@@ -65,7 +65,10 @@ I will be joining the Department of Animal Sciences at the University of Florida
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>https://HaipengU.github.io/home/software/</guid>
-      <description> R package  GCA: An R package for genetic connectedness analysis across units using pedigree and genomic data. [Github Source] [Documentation]   </description>
+      <description> Computer vision software
+ ShinyAnimalCV: open-source cloud-based web application for object detection, segmentation, and three-dimensional visualization of animals using computer vision. [Online Application] [Documentation]
+  R package
+ GCA: An R package for genetic connectedness analysis across units using pedigree and genomic data. [Github Source] [Documentation]   </description>
     </item>
     
     <item>
