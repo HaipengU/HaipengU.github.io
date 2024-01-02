@@ -6,7 +6,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Haipeng Yu</copyright>
-    <lastBuildDate>Fri, 01 Dec 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jan 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://HaipengU.github.io/" rel="self" type="application/rss+xml" />
     
     <item>
@@ -15,6 +15,15 @@
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>https://HaipengU.github.io/blog/2018/11/posts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Technical note: ShinyAnimalCV: open-source cloud-based web application for object detection, segmentation, and three-dimensional visualization of animals using computer vision</title>
+      <link>https://HaipengU.github.io/publication/cvs3shiny/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/publication/cvs3shiny/</guid>
       <description></description>
     </item>
     
