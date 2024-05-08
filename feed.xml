@@ -6,7 +6,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Haipeng Yu</copyright>
-    <lastBuildDate>Sat, 02 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 06 May 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://HaipengU.github.io/" rel="self" type="application/rss+xml" />
     
     <item>
@@ -15,6 +15,15 @@
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>https://HaipengU.github.io/blog/2018/11/posts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Use of the linear regression method to evaluate population accuracy of predictions from non-linear models</title>
+      <link>https://HaipengU.github.io/publication/lr1/</link>
+      <pubDate>Mon, 06 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://HaipengU.github.io/publication/lr1/</guid>
       <description></description>
     </item>
     
@@ -132,15 +141,6 @@
       <pubDate>Tue, 16 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://HaipengU.github.io/publication/bcfa_bn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Do stronger measures of genomic connectedness enhance prediction accuracies across management units?</title>
-      <link>https://HaipengU.github.io/publication/gc2/</link>
-      <pubDate>Tue, 28 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://HaipengU.github.io/publication/gc2/</guid>
       <description></description>
     </item>
     
